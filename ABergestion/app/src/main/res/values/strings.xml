@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ABergestion</string>
+    <string name="button_valider">Valider</string>
+    <string name="textView_bienvenue">Bienvenue !</string>
+    <string name="textView_remplirChamps">Veuillez remplir les champs pour continuer :</string>
+    <string name="editText_nom">Nom</string>
+    <string name="editText_prenom">Prénom</string>
+    <string name="passwordNum_motdepasse">Mot de passe</string>
+    <string name="passwordNum_confirmerMotdepasse">Confirmer mot de passe</string>
+</resources>
