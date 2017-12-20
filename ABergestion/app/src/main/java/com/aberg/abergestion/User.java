@@ -29,4 +29,16 @@ public class User {
     public Budget getBudget(){
         return this.budget;
     }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getFirstName(){
+        return this.firstName;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
 }
