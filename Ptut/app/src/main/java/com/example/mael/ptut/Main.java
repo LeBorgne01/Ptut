@@ -8,6 +8,8 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+      TextView text = new TextView (this);
+        text.setText ("Combeubeu tous nu!");
+        setContentView(text);
     }
 }
