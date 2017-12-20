@@ -1,5 +1,7 @@
 package com.aberg.abergestion;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText prenom;
     private EditText password;
     private TextView debug;
+    private EditText confirmPassword;
 
     private void activityMain(){
         setContentView(R.layout.activity_main);
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         prenom = findViewById(R.id.editText_prenom);
         password = findViewById(R.id.passwordNum_motdepasse);
         debug = findViewById(R.id.textView_Debug);
+        confirmPassword = findViewById(R.id.passwordNum_confirmerMotdepasse);
 
         valider.setOnClickListener(BtnValider);
 
@@ -44,7 +48,17 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener BtnValider = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            if(isText(nom.getText().toString()) && isText(prenom.getText().toString())){
+            String contenuNom = nom.getText().toString();
+            String contenuPrenom = prenom.getText().toString();
+            String contenuPassword = password.getText().toString();
+            String contenuConfirmPassword = confirmPassword.getText().toString();
+
+            if(isText(contenuNom) && isText(contenuPrenom) && isDigit(contenuPassword) && contenuPassword == contenuConfirmPassword){
+                user = new User(nom.getText().toString(), prenom.getText().toString(), password.getText().toString());
+                nom.setText("Hello");
+            }
+            else{
+               nom.setText("Salute");
 
             }
 
@@ -53,9 +67,25 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean isText(String s){
         for(int i=0; i<s.length();i++){
-            if(((s.charAt(i) < 'a') && (s.charAt(i) > 'z')) || ((s.charAt(i) < 'A') && (s.charAt(i) > 'Z'))){
+            if(!(((s.charAt(i) > 'a') && (s.charAt(i) < 'z')) || ((s.charAt(i) > 'A') && (s.charAt(i) < 'Z')))){
                 return false;
             }
+        }
+        return true;
+    }
+
+    private Boolean isDigit(String s){
+        for(int i=0; i<s.length(); i++){
+            if(!Character.isDigit(s.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Boolean isEmpty(String s){
+        if(s.length() != 0){
+            return false;
         }
         return true;
     }
