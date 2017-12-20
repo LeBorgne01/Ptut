@@ -5,4 +5,5 @@ package com.aberg.abergestion;
  */
 
 public class Depense extends Intitule {
+
 }
