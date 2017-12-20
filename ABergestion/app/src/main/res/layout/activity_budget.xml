@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <TextView
+        android:id="@+id/textView_budget_restant"
+        android:layout_width="376dp"
+        android:layout_height="29dp"
+        android:text="Budget restant du mois :"
+        android:textSize="18sp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="8dp" />
+
+   <TextView
+        android:id="@+id/budget_restant"
+        android:layout_width="107dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="125dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="36dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/budget_restant"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="20sp"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_budget_restant" />
+
+   <ListView
+       android:id="@+id/lv"
+       android:layout_width="match_parent"
+       android:layout_height="283dp"
+       tools:ignore="MissingConstraints"
+       tools:layout_editor_absoluteX="16dp"
+       tools:layout_editor_absoluteY="228dp"></ListView>
+
+
+</android.support.constraint.ConstraintLayout>

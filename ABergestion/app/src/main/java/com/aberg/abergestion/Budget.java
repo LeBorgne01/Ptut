@@ -1,5 +1,12 @@
 package com.aberg.abergestion;
 
+import android.content.Context;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 /**
@@ -13,7 +20,7 @@ public class Budget {
         this.budget = new ArrayList<>();
     }
 
-    public void addIntitule(Intitule i){
+    public void addIntitule(Intitule i) {
         this.budget.add(i);
     }
 }

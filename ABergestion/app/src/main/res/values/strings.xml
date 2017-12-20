@@ -7,4 +7,5 @@
     <string name="editText_prenom">Prénom</string>
     <string name="passwordNum_motdepasse">Mot de passe</string>
     <string name="passwordNum_confirmerMotdepasse">Confirmer mot de passe</string>
+    <string name="budget_restant">000,00 euro</string>
 </resources>
