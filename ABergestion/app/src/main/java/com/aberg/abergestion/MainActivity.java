@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         if(loadUser()){
             Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
             startActivity(intent);
+            this.finish();
         }
 
 
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                             //On redirige l'utilisateur sur l'activité du menu
                             Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                             startActivity(intent);
-
+                            MainActivity.this.finish();
                         }
                         else{
                             //On prévient que les mots de passe de sont pas identiques

@@ -85,6 +85,7 @@ public class PasswordActivity extends AppCompatActivity {
                 //On redirige l'utilisateur sur l'activité du menu
                 Intent intent = new Intent(PasswordActivity.this, MenuActivity.class);
                 startActivity(intent);
+                PasswordActivity.this.finish();
             }
             else{
                 passwordCompared = "";

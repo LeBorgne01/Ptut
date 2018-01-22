@@ -30,7 +30,7 @@ public class MenuActivity extends AppCompatActivity {
 
         gestionBudget.setOnClickListener(btnGestionBudget);
         gestionStock.setOnClickListener(btnGestionStock);
-        
+
     }
 
     private View.OnClickListener btnGestionBudget = new View.OnClickListener() {
