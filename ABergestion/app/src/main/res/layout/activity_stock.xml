@@ -7,15 +7,16 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="200dp"
+        android:layout_width="267dp"
         android:layout_height="40dp"
         android:layout_marginTop="36dp"
         android:text="Gestion de stock"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -26,4 +27,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="263dp"
+        android:layout_height="145dp"
+        android:ems="10"
+        android:gravity="top"
+        android:inputType="text|textPersonName"
+        android:lineSpacingExtra="8sp"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
+        android:textAlignment="textStart"
+        android:typeface="normal"
+        tools:layout_editor_absoluteX="49dp"
+        tools:layout_editor_absoluteY="144dp" />
 </android.support.constraint.ConstraintLayout>

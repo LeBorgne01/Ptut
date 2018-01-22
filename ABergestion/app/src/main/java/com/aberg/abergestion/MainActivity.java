@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private TextView debug;
     private EditText confirmPassword;
+    private  Product p = new Product ( "ravioli", "plat preparé", 2, "10/01/2018", "14/03/2020", "boite");
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         //loadUser(user);
         //On redirige l'utilisateur sur la menu des gestions
-        setContentView(R.layout.activity_menu);
+       // setContentView(R.layout.activity_menu);
 
 
         //On lie les champs XML avec les champs JAVA

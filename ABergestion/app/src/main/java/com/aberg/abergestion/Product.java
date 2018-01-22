@@ -4,7 +4,7 @@ package com.aberg.abergestion;
  * Created by Mickael on 20/12/2017.
  */
 
-public abstract class Product {
+public  class Product {
     private String name;
     private String category;
     private int quantity;
