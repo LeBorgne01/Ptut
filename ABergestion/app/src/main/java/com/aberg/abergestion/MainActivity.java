@@ -51,17 +51,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
+      //  SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
         
 
 
         //loadUser(user);
         //On redirige l'utilisateur sur la menu des gestions
-<<<<<<< HEAD
+
        // setContentView(R.layout.activity_menu);
-=======
+
         //setContentView(R.layout.activity_menu);
->>>>>>> 63cc1c96237fc199f158b0449dd0613a8d769765
+
 
 
         //On lie les champs XML avec les champs JAVA
