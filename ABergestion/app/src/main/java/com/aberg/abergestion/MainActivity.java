@@ -1,32 +1,21 @@
 package com.aberg.abergestion;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedWriter;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.File;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 //MainActivity est en lien avec la vue de la création de compte
 public class MainActivity extends AppCompatActivity {
@@ -47,9 +36,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
-        
+        if(loadUser()){
+            Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
+            startActivity(intent);
+        }
 
 
         //loadUser(user);
@@ -62,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         nom = findViewById(R.id.editText_nom);
         prenom = findViewById(R.id.editText_prenom);
         password = findViewById(R.id.passwordNum_motdepasse);
-        debug = findViewById(R.id.textView_Debug);
         confirmPassword = findViewById(R.id.passwordNum_confirmerMotdepasse);
 
         //On ajoute le listener du bouton valider
@@ -108,15 +97,20 @@ public class MainActivity extends AppCompatActivity {
                             //On sauvegarde l'utilisateur dans un fichier
                             try {
                                 saveUser(user);
+
+                                //On prévient l'utilisateur que l'utilisateur entré a été créé
+                                alertDialog("L'utilisateur "+contenuPrenom+" "+contenuNom+" a été créer !");
+
                             } catch (IOException e) {
-                                alertDialog("Impossible de save l'utilisateur");
+                                alertDialog("Impossible de sauver l'utilisateur");
                             }
 
-                            //On prévient l'utilisateur que l'utilisateur entré a été créé
-                            alertDialog("L'utilisateur "+contenuPrenom+" "+contenuNom+" a été créer !");
+
 
                             //On redirige l'utilisateur sur l'activité du menu
-                            setContentView(R.layout.activity_menu);
+                            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                            startActivity(intent);
+
                         }
                         else{
                             //On prévient que les mots de passe de sont pas identiques
@@ -199,52 +193,25 @@ public class MainActivity extends AppCompatActivity {
 
     //Fonction pour enregistrer l'utilisateur dans un fichier
     private void saveUser(User u) throws IOException {
-        try {
 
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(openFileOutput("user.txt",Context.MODE_PRIVATE)));
-
-
-            //On écrit le nom de l'utilisateur
-            bw.write(u.getName());
-            bw.write('\n');
-
-            //On écrit le prenom de l'utilisateur
-            bw.write(u.getFirstName());
-            bw.write('\n');
-
-            //On écrit le mot de passe de l'utilisateur
-            bw.write(u.getPassword());
-
-
-            //On ferme l'écrivain
-            bw.close();
-
-
-        } catch (Exception e) {
-            alertDialog("Impossible de sauvegarder");
-        }
-
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = user.edit();
+        editor.putString("NAME", u.getName());
+        editor.putString("FIRSTNAME", u.getFirstName());
+        editor.putString("PASSWORD", u.getPassword());
+        editor.commit();
     }
 
     //Fonction pour lire les données de l'utilisateur
-    private void loadUser(User u) throws IOException {
+    private boolean loadUser() {
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+        String nom = user.getString("NAME","n/a");
 
-        String nom;
-        String prenom;
-        String password;
-
-        try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput("user.txt")));
-
-            nom = br.readLine();
-            prenom = br.readLine();
-            password = br.readLine();
-            br.close();
-
-            user = new User(nom,prenom,password);
-        }catch(Exception e){
-            alertDialog("Impossible de charger");
+        if(nom == "n/a"){
+            return false;
         }
-
+        else{
+            return true;
+        }
     }
 }
