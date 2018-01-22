@@ -7,5 +7,15 @@
     <string name="editText_prenom">Prénom</string>
     <string name="passwordNum_motdepasse">Mot de passe</string>
     <string name="passwordNum_confirmerMotdepasse">Confirmer mot de passe</string>
+<<<<<<< HEAD
     <string name="budget_restant">000,00 euro</string>
+=======
+    <string name="AlertDialog_champsrempli">Les champs doivent tous être remplis !</string>
+    <string name="AlertDialog_passwordIdentiques">Le mot de passe et la confirmation de mot de passe doivent être identiques !</string>
+    <string name="AlertDialog_queChiffres">Le mot de passe ne doit contenir que des chiffres !</string>
+    <string name="AlertDialog_champsNomPrenom">Les champs Nom et Prenom ne doivent contenir que des lettres, minuscules ou Majuscules, et \'-\' et l\'espace !</string>
+    <string name="textView_choixGestion">Choisissez la gestion :</string>
+    <string name="button_gestionBudget">Gestion de Budget</string>
+    <string name="button_gestionStock">Gestion de Stock</string>
+>>>>>>> a27332f8170b8b802cf656cf8eb725f6981ec71e
 </resources>
