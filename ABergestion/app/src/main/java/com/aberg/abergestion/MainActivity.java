@@ -3,6 +3,7 @@ package com.aberg.abergestion;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,12 +46,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        File f = new File("user.txt");
+
+
+        SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
+        
 
 
         //loadUser(user);
         //On redirige l'utilisateur sur la menu des gestions
-        setContentView(R.layout.activity_menu);
+        //setContentView(R.layout.activity_menu);
 
 
         //On lie les champs XML avec les champs JAVA
