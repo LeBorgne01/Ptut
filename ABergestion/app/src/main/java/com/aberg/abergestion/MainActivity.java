@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
                                 saveUser(user);
 
                                 //On prévient l'utilisateur que l'utilisateur entré a été créé
-                                alertDialog("L'utilisateur "+contenuPrenom+" "+contenuNom+" a été créer !");
+                                alertDialog(getString(R.string.alertDialog_creationUser1)+contenuPrenom+getString(R.string.alertDialog_creationUser2)+contenuNom+getString(R.string.alertDialog_creationUser3));
 
                             } catch (IOException e) {
-                                alertDialog("Impossible de sauver l'utilisateur");
+                                alertDialog(getString(R.string.alertDialog_impossibleSaveUser));
                             }
 
 
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         bugAlert.setMessage(message);
 
         //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
-        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener(){
+        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
