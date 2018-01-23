@@ -30,6 +30,18 @@
     <string name="button_erase">Effacer</string>
     <string name="textView_enterPW">Entrez votre mot de passe :</string>
 
+    <!-- Bouton numerique -->
+    <string name="button_1">1</string>
+    <string name="button_2">2</string>
+    <string name="button_3">3</string>
+    <string name="button_4">4</string>
+    <string name="button_5">5</string>
+    <string name="button_6">6</string>
+    <string name="button_7">7</string>
+    <string name="button_8">8</string>
+    <string name="button_9">9</string>
+    <string name="button_0">0</string>
+
     <!-- Gestion du stock-->
     <string name="textView_getionStock">Gestion de Stock</string>
     <string name="button_groceryList">Liste de Courses</string>
