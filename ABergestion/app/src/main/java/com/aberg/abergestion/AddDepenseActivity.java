@@ -85,6 +85,6 @@ public class AddDepenseActivity extends AppCompatActivity {
             System.out.println(contenuAnnee);
             System.out.println(contenuSwitchPerio);
         }
-    }
+    };
 
 }

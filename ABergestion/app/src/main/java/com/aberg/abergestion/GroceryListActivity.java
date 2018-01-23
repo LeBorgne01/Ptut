@@ -43,7 +43,7 @@ public class GroceryListActivity extends AppCompatActivity {
         al_groceryList= new ArrayList<String>();
         back=findViewById(R.id.button_back);
         back.setOnClickListener(BtnBack);
-        al_groceryList.add("ricard");
+        al_groceryList.add("eau");
         al_groceryList.add("chips");
         al_groceryList.add("ravioli");
 
@@ -54,8 +54,8 @@ public class GroceryListActivity extends AppCompatActivity {
 
         stockListView = (ListView) findViewById(R.id.listViewStock);
 
-        //final ArrayAdapter<String> adapter = new ArrayAdapter<String>(GroceryListActivity.this,android.R.layout.simple_list_item_1, al_groceryList);
-        ListAdapter adapter = new SimpleAdapter(GroceryListActivity.this, al_groceryList, R.layout.activity_grocery_list, new String[]{"id", "nom"}, new int[] { 1, R.id.name });
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(GroceryListActivity.this,android.R.layout.simple_list_item_1, al_groceryList);
+        //ListAdapter adapter = new SimpleAdapter(GroceryListActivity.this, al_groceryList, R.layout.activity_grocery_list, new String[]{"id", "nom"}, new int[] { 1, R.id.name });
         stockListView.setAdapter(adapter);
 
 
