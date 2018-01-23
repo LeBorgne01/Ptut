@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+<<<<<<< HEAD
 
         //SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
         
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+=======
+>>>>>>> eae7b8544d06e5fd81d371af597cd2459df1058d
         //On lie les champs XML avec les champs JAVA
         valider = findViewById(R.id.button_valider1);
         nom = findViewById(R.id.editText_nom);
