@@ -1,17 +1,17 @@
 package com.aberg.abergestion;
 
 /**
- * Created by Mael on 19/12/2017.
+ * Created by louis on 23/01/2018.
  */
 
-public class Depense extends Intitule {
+public class donneesBudget {
     private String intitule;
     private Date date;
-    private float montant;
+    private double montant;
 
-    public Depense(String inti, Date d, float montant){
-        this.intitule = inti;
+    public donneesBudget(String inti,Date d, double montant){
         this.date = d;
+        this.intitule= inti;
         this.montant = montant;
     }
 
@@ -23,7 +23,7 @@ public class Depense extends Intitule {
         return date;
     }
 
-    public float getMontant(){
+    public double getMontant(){
         return montant;
     }
 }

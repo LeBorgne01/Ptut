@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by louis on 22/01/2018.
  */
 
-public class spinnerDR extends AppCompatActivity {
+public class DetailDRActivity extends AppCompatActivity {
     //Les views de l'interface
     Spinner sp;
     TextView tvMontant,tvDate,tvInti;
