@@ -9,17 +9,10 @@
     <string name="passwordNum_confirmerMotdepasse">Confirmer mot de passe</string>
 
 
-<<<<<<< HEAD
-    <string name="budget_restant">000,00 euro</string>
-
-
-=======
 
     <string name="budget_restant">000,00 euro</string>
 
 
-    <string name="budget_restant">000,00 euro</string>
->>>>>>> dab1b3863692d11e3ad029fd45b8f415bbbb3430
 
     <string name="AlertDialog_champsrempli">Les champs doivent tous être remplis !</string>
     <string name="AlertDialog_passwordIdentiques">Le mot de passe et la confirmation de mot de passe doivent être identiques !</string>
