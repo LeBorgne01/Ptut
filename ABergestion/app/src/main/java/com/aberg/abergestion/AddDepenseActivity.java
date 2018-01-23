@@ -71,20 +71,20 @@ public class AddDepenseActivity extends AppCompatActivity {
     private View.OnClickListener BtnValider = new View.OnClickListener(){
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View v){
             String contenuIntitule = eTIntitule.getText().toString();
-            String contenuMontant = eTMontant.getText().toString();
+            double stringMontant = Double.parseDouble(eTMontant.getText().toString());
             int contenuJour = Integer.parseInt(spJ.getSelectedItem().toString());
             int contenuMois = Integer.parseInt(spM.getSelectedItem().toString());
             int contenuAnnee = Integer.parseInt(spA.getSelectedItem().toString());
             boolean contenuSwitchPerio = switch_periodicite.isChecked();
             System.out.println(contenuIntitule);
-            System.out.println(contenuMontant);
+            System.out.println(stringMontant);
             System.out.println(contenuJour);
             System.out.println(contenuMois);
             System.out.println(contenuAnnee);
             System.out.println(contenuSwitchPerio);
         }
-    }
+    };
 
 }
