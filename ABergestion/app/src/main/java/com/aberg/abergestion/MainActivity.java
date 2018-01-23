@@ -43,34 +43,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         }
-
-
-
-        //SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
         
 
-
-
-        //loadUser(user);
-        //On redirige l'utilisateur sur la menu des gestions
-
-       // setContentView(R.layout.activity_menu);
-        //setContentView(R.layout.activity_menu);
-
-
-       // setContentView(R.layout.activity_menu);
-
-        //setContentView(R.layout.activity_menu);
-
-
-
-<<<<<<< HEAD
-=======
-
-
-=======
->>>>>>> eae7b8544d06e5fd81d371af597cd2459df1058d
->>>>>>> 92d40902069aad01c759552eb3c5bde8769926e5
         //On lie les champs XML avec les champs JAVA
         valider = findViewById(R.id.button_valider1);
         nom = findViewById(R.id.editText_nom);
