@@ -15,5 +15,38 @@
     <string name="textView_choixGestion">Choisissez la gestion :</string>
     <string name="button_gestionBudget">Gestion de Budget</string>
     <string name="button_gestionStock">Gestion de Stock</string>
+    <string name="textView_modifyPassword">Modifier votre mot de passe</string>
+    <string name="passwordNum_lastPassword">Ancien mot de passe</string>
+    <string name="passwordNum_newPassword">Nouveau mot de passe</string>
+    <string name="button_modifyPassword">Modifier mot de passe</string>
+    <string name="alertDialog_impossibleSaveUser">Impossible de sauver l\'utilisateur</string>
+    <string name="alertDialog_creationUser1">L\'utilisateur</string>
+    <string name="alertDialog_creationUser2" />
+    <string name="alertDialog_creationUser3">a été créer !</string>
+    <string name="alertDialog_ok">Ok</string>
+    <string name="alertDialog_falseLastPW">Votre ancien mot de passe est faux</string>
+    <string name="alertDialog_modifyPW">Votre mot de passe a été modifié</string>
+    <string name="alertDialog_confirmationPWDifferent">La confirmation de mot de passe est différente du mot de passe</string>
+    <string name="button_erase">Effacer</string>
+    <string name="textView_enterPW">Entrez votre mot de passe :</string>
+
+    <!-- Bouton numerique -->
+    <string name="button_1">1</string>
+    <string name="button_2">2</string>
+    <string name="button_3">3</string>
+    <string name="button_4">4</string>
+    <string name="button_5">5</string>
+    <string name="button_6">6</string>
+    <string name="button_7">7</string>
+    <string name="button_8">8</string>
+    <string name="button_9">9</string>
+    <string name="button_0">0</string>
+
+    <!-- Gestion du stock-->
+    <string name="textView_getionStock">Gestion de Stock</string>
+    <string name="button_groceryList">Liste de Courses</string>
+    <string name="button_productList">Liste des produits</string>
+    <string name="alertDialog_wrongPW">Mauvais mot de passe !</string>
+
 
 </resources>

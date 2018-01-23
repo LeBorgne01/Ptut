@@ -13,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 //MainActivity est en lien avec la vue de la création de compte
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private TextView debug;
     private EditText confirmPassword;
-    private  Product p = new Product ( "ravioli", "plat preparé", 2, "10/01/2018", "14/03/2020", "boite");
+
 
 
 
@@ -39,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Si l'utilisateur est déjà créé, on redirige sur l'activité mot de passe
         if(loadUser()){
             Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
             startActivity(intent);
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+<<<<<<< HEAD
 
         //SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
         
@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+=======
+>>>>>>> dfec2842da2240c6622f34d623e058f92fc55a52
         //On lie les champs XML avec les champs JAVA
         valider = findViewById(R.id.button_valider1);
         nom = findViewById(R.id.editText_nom);
@@ -75,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
         //On ajoute le listener du bouton valider
         valider.setOnClickListener(BtnValider);
-
-
 
     }
 
@@ -118,10 +118,10 @@ public class MainActivity extends AppCompatActivity {
                                 saveUser(user);
 
                                 //On prévient l'utilisateur que l'utilisateur entré a été créé
-                                alertDialog("L'utilisateur "+contenuPrenom+" "+contenuNom+" a été créer !");
+                                alertDialog(getString(R.string.alertDialog_creationUser1)+contenuPrenom+getString(R.string.alertDialog_creationUser2)+contenuNom+getString(R.string.alertDialog_creationUser3));
 
                             } catch (IOException e) {
-                                alertDialog("Impossible de sauver l'utilisateur");
+                                alertDialog(getString(R.string.alertDialog_impossibleSaveUser));
                             }
 
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     else{
-                        //On prévient que les mot de passe n'ont pas que des chiffres
+                        //On prévient que les mots de passe n'ont pas que des chiffres
                         alertDialog(getString(R.string.AlertDialog_queChiffres));
                     }
                 }
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         bugAlert.setMessage(message);
 
         //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
-        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener(){
+        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    //Fonction pour lire les données de l'utilisateur
+    //Fonction pour dire si il y a déjà un utilisateur
     private boolean loadUser() {
         SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
         String nom = user.getString("NAME","n/a");

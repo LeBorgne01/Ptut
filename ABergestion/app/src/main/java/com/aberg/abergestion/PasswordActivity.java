@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 public class PasswordActivity extends AppCompatActivity {
 
+    //On crée les différents composants qui se situe sur l'activité
     private Button one;
     private Button two;
     private Button three;
@@ -31,7 +32,7 @@ public class PasswordActivity extends AppCompatActivity {
     private Button effacer;
     private TextView password;
 
-
+    //On crée un mot de passe que l'utilisateur va taper grâce aux boutons
     private String passwordCompared = "";
 
 
@@ -40,6 +41,7 @@ public class PasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
 
+        //On lie le JAVA et le XML
         one = findViewById(R.id.button_1);
         two = findViewById(R.id.button_2);
         three = findViewById(R.id.button_3);
@@ -55,7 +57,7 @@ public class PasswordActivity extends AppCompatActivity {
         valider = findViewById(R.id.button_validerPassword);
 
 
-
+        //On ajoute les listener nécessaire pour les différents boutons de l'activité
         one.setOnClickListener(btnOne);
         two.setOnClickListener(btnTwo);
         three.setOnClickListener(btnThree);
@@ -69,9 +71,6 @@ public class PasswordActivity extends AppCompatActivity {
 
         effacer.setOnClickListener(btnEffacer);
         valider.setOnClickListener(btnValider);
-
-
-
 
     }
 
@@ -90,13 +89,14 @@ public class PasswordActivity extends AppCompatActivity {
             else{
                 passwordCompared = "";
                 password.setText("");
-                alertDialog("Mauvais mot de passe !");
+                alertDialog(getString(R.string.alertDialog_wrongPW));
             }
 
 
         }
     };
 
+    //Gestion des boutons numériques
     private View.OnClickListener btnOne = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -237,6 +237,7 @@ public class PasswordActivity extends AppCompatActivity {
         }
     };
 
+    //On gère le bouton effacer qui réinitialise le mot de passe entré
     private View.OnClickListener btnEffacer = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -245,6 +246,7 @@ public class PasswordActivity extends AppCompatActivity {
         }
     };
 
+    //Fonction pour mettre une alerte si le mot de passe est faux
     private void alertDialog(String message){
         //On crée la fenetre
         AlertDialog bugAlert = new AlertDialog.Builder(PasswordActivity.this).create();
@@ -253,7 +255,7 @@ public class PasswordActivity extends AppCompatActivity {
         bugAlert.setMessage(message);
 
         //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
-        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener(){
+        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
