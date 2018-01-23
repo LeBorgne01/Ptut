@@ -13,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 //MainActivity est en lien avec la vue de la création de compte
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Si l'utilisateur est déjà créé, on redirige sur l'activité mot de passe
         if(loadUser()){
             Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
             startActivity(intent);
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+<<<<<<< HEAD
 
         //SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
         
@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+=======
+>>>>>>> 3b69a95f0923d637350f4a376f412dac782fe696
 
         //On lie les champs XML avec les champs JAVA
         valider = findViewById(R.id.button_valider1);
@@ -75,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
         //On ajoute le listener du bouton valider
         valider.setOnClickListener(BtnValider);
-
-
 
     }
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     else{
-                        //On prévient que les mot de passe n'ont pas que des chiffres
+                        //On prévient que les mots de passe n'ont pas que des chiffres
                         alertDialog(getString(R.string.AlertDialog_queChiffres));
                     }
                 }
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    //Fonction pour lire les données de l'utilisateur
+    //Fonction pour dire si il y a déjà un utilisateur
     private boolean loadUser() {
         SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
         String nom = user.getString("NAME","n/a");
