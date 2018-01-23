@@ -1,5 +1,6 @@
 package com.aberg.abergestion;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,17 +19,7 @@ public class StockActivity extends AppCompatActivity {
     private TextView stockManagement;
     private Button groceryList;
     private Button productList;
-    private  ListView stockListView;
 
-
-
-    String[] prenoms = new String[]{
-            "Antoine", "Benoit", "Cyril", "David", "Eloise", "Florent",
-            "Gerard", "Hugo", "Ingrid", "Jonathan", "Kevin", "Logan",
-            "Mathieu", "Noemie", "Olivia", "Philippe", "Quentin", "Romain",
-            "Sophie", "Tristan", "Ulric", "Vincent", "Willy", "Xavier",
-            "Yann", "Zoé"
-    };
 
 
     @Override
@@ -41,9 +32,11 @@ public class StockActivity extends AppCompatActivity {
         groceryList =findViewById(R.id.button_groceryList);
         productList=findViewById(R.id.button_productList);
 
+
         //On ajoute le listener du bouton valider
         groceryList.setOnClickListener(BtnGroceryList);
         productList.setOnClickListener(BtnProductList);
+
 
 
 
@@ -58,25 +51,16 @@ public class StockActivity extends AppCompatActivity {
 
 
     }
-    public void viewGroceryList(){
-        setContentView(R.layout.activity_grocery_list);
-        stockListView = (ListView) findViewById(R.id.listViewStock);
-
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(StockActivity.this,android.R.layout.simple_list_item_1, prenoms);
-        stockListView.setAdapter(adapter);
-
-
-    }
 
     private View.OnClickListener BtnGroceryList = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            viewGroceryList();
+            Intent intent = new Intent(StockActivity.this, GroceryListActivity.class);
+            startActivity(intent);
 
         }
 
     };
-
 
     private View.OnClickListener BtnProductList = new View.OnClickListener(){
         @Override
@@ -86,5 +70,7 @@ public class StockActivity extends AppCompatActivity {
         }
 
     };
+
+
 
 }

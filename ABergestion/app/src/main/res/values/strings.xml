@@ -7,20 +7,16 @@
     <string name="editText_prenom">Prénom</string>
     <string name="passwordNum_motdepasse">Mot de passe</string>
     <string name="passwordNum_confirmerMotdepasse">Confirmer mot de passe</string>
-<<<<<<< HEAD
 
 
 
 
-    <string name="budget_restant">000,00 euro</string>
-
-
-
-=======
 
     <string name="budget_restant">000,00 euro</string>
 
->>>>>>> 3b69a95f0923d637350f4a376f412dac782fe696
+
+
+
     <string name="AlertDialog_champsrempli">Les champs doivent tous être remplis !</string>
     <string name="AlertDialog_passwordIdentiques">Le mot de passe et la confirmation de mot de passe doivent être identiques !</string>
     <string name="AlertDialog_queChiffres">Le mot de passe ne doit contenir que des chiffres !</string>
@@ -38,5 +34,6 @@
     <string name="textView_getionStock">Gestion de Stock</string>
     <string name="button_groceryList">Liste de Courses</string>
     <string name="button_productList">Liste des produits</string>
+    <string name="button_back">Retour</string>
 
 </resources>
