@@ -39,32 +39,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Si l'utilisateur est déjà créé, on redirige sur l'activité mot de passe
         if(loadUser()){
             Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
             startActivity(intent);
             this.finish();
         }
 
-
-<<<<<<< HEAD
-        //SharedPreferences.getSharedPreferences("user.txt", Context.MODE_PRIVATE);
-        
-=======
->>>>>>> c1b0e962c436e7e8fd619a3ad2aab6cc1fba9df3
-
-
-        //loadUser(user);
-        //On redirige l'utilisateur sur la menu des gestions
-<<<<<<< HEAD
-       // setContentView(R.layout.activity_menu);
-        //setContentView(R.layout.activity_menu);
-=======
-
-       // setContentView(R.layout.activity_menu);
-
-        //setContentView(R.layout.activity_menu);
-
->>>>>>> c1b0e962c436e7e8fd619a3ad2aab6cc1fba9df3
 
 
         //On lie les champs XML avec les champs JAVA
@@ -76,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         //On ajoute le listener du bouton valider
         valider.setOnClickListener(BtnValider);
-
-
 
     }
 
@@ -222,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    //Fonction pour lire les données de l'utilisateur
+    //Fonction pour dire si il y a déjà un utilisateur
     private boolean loadUser() {
         SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
         String nom = user.getString("NAME","n/a");
