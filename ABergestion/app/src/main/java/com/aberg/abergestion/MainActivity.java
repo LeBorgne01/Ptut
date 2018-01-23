@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     else{
-                        //On prévient que les mot de passe n'ont pas que des chiffres
+                        //On prévient que les mots de passe n'ont pas que des chiffres
                         alertDialog(getString(R.string.AlertDialog_queChiffres));
                     }
                 }

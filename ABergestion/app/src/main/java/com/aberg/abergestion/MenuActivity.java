@@ -18,6 +18,7 @@ public class MenuActivity extends AppCompatActivity {
     //On crée les différents composants de l'activité
     private Button gestionBudget;
     private Button gestionStock;
+    private Button gestionPW;
 
 
     @Override
@@ -28,10 +29,12 @@ public class MenuActivity extends AppCompatActivity {
         //On lie le JAVA et le XML
         gestionBudget = findViewById(R.id.button_gestionBudget);
         gestionStock = findViewById(R.id.button_gestionStock);
+        gestionPW = (Button) findViewById(R.id.button_gestionPassword);
 
-        //On ajoute les listeners sur les deux boutons
+        //On ajoute les listeners sur les trois boutons
         gestionBudget.setOnClickListener(btnGestionBudget);
         gestionStock.setOnClickListener(btnGestionStock);
+        gestionPW.setOnClickListener(btnGestionPW);
 
     }
 
@@ -49,6 +52,15 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MenuActivity.this, StockActivity.class);
+            startActivity(intent);
+        }
+    };
+
+    //Pour le mot de passe, on redirige sur la page de modification de mot de passe
+    private View.OnClickListener btnGestionPW = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MenuActivity.this, ModifyPasswordActivity.class);
             startActivity(intent);
         }
     };
