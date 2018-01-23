@@ -47,7 +47,7 @@
     <string name="button_groceryList">Liste de Courses</string>
     <string name="button_productList">Liste des produits</string>
     <string name="button_back">Retour</string>
-    <string name="button_back">Retour</string>
+
     <string name="alertDialog_wrongPW">Mauvais mot de passe !</string>
 
 
