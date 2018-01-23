@@ -13,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 //MainActivity est en lien avec la vue de la création de compte
 public class MainActivity extends AppCompatActivity {
