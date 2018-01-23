@@ -52,7 +52,7 @@ public class ModifyPasswordActivity extends AppCompatActivity {
 
             //On vérifie si les champs sont remplis
             if(isEmpty(lastPW) || isEmpty(newPW) || isEmpty(confirmPW)){
-                alertDialog("Tous les champs doivent être remplis");
+                alertDialog(getString(R.string.AlertDialog_champsrempli));
             }
             else{
                 //On vérifie que les champs contiennent que des chiffres
@@ -75,18 +75,18 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                             confirmPassword.setText("");
 
                             //On alerte l'utilisateur
-                            alertDialog("Votre mot de passe a été modifié");
+                            alertDialog(getString(R.string.alertDialog_modifyPW));
                         }
                         else{
-                            alertDialog("La confirmation de mot de passe est différente du mot de passe");
+                            alertDialog(getString(R.string.alertDialog_confirmationPWDifferent));
                         }
                     }
                     else{
-                        alertDialog("Votre ancien mot de passe est faux");
+                        alertDialog(getString(R.string.alertDialog_falseLastPW));
                     }
                 }
                 else{
-                    alertDialog("Vos mots de passe doivent contenir que des chiffres");
+                    alertDialog(getString(R.string.AlertDialog_queChiffres));
                 }
             }
         }
@@ -130,7 +130,7 @@ public class ModifyPasswordActivity extends AppCompatActivity {
         bugAlert.setMessage(message);
 
         //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
-        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener(){
+        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

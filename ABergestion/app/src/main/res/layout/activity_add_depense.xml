@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editText_intitule"
+        android:layout_width="213dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Intitule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText_montant"
+        android:layout_width="213dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Montant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_intitule" />
+
+    <Spinner
+        android:id="@+id/spinner_jour"
+        android:layout_width="98dp"
+        android:layout_height="59dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_jour"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_montant" />
+
+    <Spinner
+        android:id="@+id/spinner_mois"
+        android:layout_width="98dp"
+        android:layout_height="58dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginTop="104dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_mois"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_montant" />
+
+    <Spinner
+        android:id="@+id/spinner_annee"
+        android:layout_width="101dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="172dp"
+        app:layout_constraintStart_toEndOf="@+id/textView_annee"
+        app:layout_constraintTop_toBottomOf="@+id/editText_montant" />
+
+    <Switch
+        android:id="@+id/switch_periodicite"
+        android:layout_width="213dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Periodicité"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_annee" />
+
+    <TextView
+        android:id="@+id/textView_jour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="64dp"
+        android:text="Jour :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_montant" />
+
+    <TextView
+        android:id="@+id/textView_mois"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="124dp"
+        android:text="Mois :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_montant" />
+
+    <TextView
+        android:id="@+id/textView_annee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="184dp"
+        android:text="Année :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_montant" />
+
+    <Button
+        android:id="@+id/button_valider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:text="Valider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_periodicite" />
+
+</android.support.constraint.ConstraintLayout>

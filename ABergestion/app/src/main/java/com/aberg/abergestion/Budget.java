@@ -14,13 +14,22 @@ import java.util.ArrayList;
  */
 
 public class Budget {
-    private ArrayList<Intitule> budget;
+    private ArrayList<donneesBudget> datas;
+    private ArrayList<String> intituleData;
 
-    public Budget() {
-        this.budget = new ArrayList<>();
+    public Budget(ArrayList<donneesBudget> datas){
+        this.datas = datas;
+        this.intituleData = new ArrayList<String>();
+        for(int i = 0; i < datas.size(); i++ ){
+            intituleData.add(datas.get(i).getIntitule());
+        }
     }
 
-    public void addIntitule(Intitule i) {
-        this.budget.add(i);
+    public ArrayList<donneesBudget> getDatas(){
+        return datas;
+    }
+
+    public ArrayList<String> getIntituleData(){
+        return intituleData;
     }
 }

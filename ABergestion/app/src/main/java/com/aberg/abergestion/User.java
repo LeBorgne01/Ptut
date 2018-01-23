@@ -14,7 +14,7 @@ public class User {
         this.name = name;
         this.firstName = firstName;
         this.password = password;
-        this.budget = new Budget();
+        //this.budget = new Budget();
     }
 
     public boolean checkPassword(String password){
@@ -26,9 +26,9 @@ public class User {
         }
     }
 
-    public Budget getBudget(){
+    /*public Budget getBudget(){
         return this.budget;
-    }
+    }*/
 
     public String getName(){
         return this.name;

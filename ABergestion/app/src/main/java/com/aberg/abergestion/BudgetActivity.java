@@ -1,5 +1,6 @@
 package com.aberg.abergestion;
 
+import android.content.Intent;
 import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,9 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 /**
  * Created by louis on 20/12/2017.
@@ -26,46 +30,34 @@ import android.view.View;
 public class BudgetActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener{
 
     private TextView budget_restant,textView_budget_restant;
-    private Button button_voir_detail;
-    private ListView mListView;
-    private String[] prenoms = new String[]{
-            "Antoine", "Benoit", "Cyril", "David", "Eloise", "Florent",
-            "Gerard", "Hugo", "Ingrid", "Jonathan", "Kevin", "Logan",
-            "Mathieu", "Noemie", "Olivia", "Philippe", "Quentin", "Romain",
-            "Sophie", "Tristan", "Ulric", "Vincent", "Willy", "Xavier",
-            "Yann", "Zoé"
-    };
-
+    private Button button_voir_detail, add_depense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityBudget();
-
+        add_depense = findViewById(R.id.add_depense);
         button_voir_detail = findViewById(R.id.button_voir_detail);
         button_voir_detail.setOnClickListener(this);
-
-        //user = new User((EditText)findViewById(R.id.editText_nom),(EditText)findViewById(R.id.editText_prenom),(EditText)findViewById(R.id.passwordNum_motdepasse));
+        add_depense.setOnClickListener(this);
     }
 
     private void activityBudget() {
         setContentView(R.layout.activity_budget);
-
         budget_restant= findViewById(R.id.budget_restant);
         textView_budget_restant = findViewById(R.id.textView_budget_restant);
     }
 
-    private void initLv(){
-        setContentView(R.layout.activity_depense_revenu);
-        mListView = (ListView) findViewById(R.id.lv);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(BudgetActivity.this, android.R.layout.simple_list_item_1, prenoms);
-        mListView.setAdapter(adapter);
-    }
-
+    //Interaction
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.button_voir_detail){
-            this.initLv();
+            Intent intent = new Intent(BudgetActivity.this, DepenseRevenuActivity.class);
+            startActivity(intent);
+        }
+        if(view.getId() == R.id.add_depense){
+            Intent intent = new Intent(BudgetActivity.this, AddDepenseActivity.class);
+            startActivity(intent);
         }
     }
 

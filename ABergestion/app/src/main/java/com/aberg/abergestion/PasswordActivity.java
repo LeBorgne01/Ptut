@@ -89,7 +89,7 @@ public class PasswordActivity extends AppCompatActivity {
             else{
                 passwordCompared = "";
                 password.setText("");
-                alertDialog("Mauvais mot de passe !");
+                alertDialog(getString(R.string.alertDialog_wrongPW));
             }
 
 
@@ -255,7 +255,7 @@ public class PasswordActivity extends AppCompatActivity {
         bugAlert.setMessage(message);
 
         //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
-        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener(){
+        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
