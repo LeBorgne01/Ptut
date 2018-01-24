@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -14,6 +15,13 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +35,13 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private Button back;
     private ListView stockListView;
-    private ArrayList <Product> al_groceryList = new ArrayList<>();
+    private ArrayList <Product> al_groceryList;
     private Product p;
     private Product p2;
     private Product p3;
     private Button add;
 
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ABergestion";
 
 
     @Override
@@ -40,16 +49,28 @@ public class GroceryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
 
-        p= new Product("ravioli","alimentaire",2,null,null,"conserve");
-        p2= new Product("chips","alimentaire",4,null,null,"sachet");
-        p3= new Product("lessive","menager",1,null,null,"bidon");
+        al_groceryList = new ArrayList<>();
 
-        //al_groceryList = new ArrayList<>();
-        al_groceryList.add(p);
-        al_groceryList.add(p2);
-        al_groceryList.add(p3);
+        File dir = new File(path);
+        dir.mkdir();
 
+        File file = new File(path +"groceryList.txt");
 
+        System.out.println("Fichier existe : "+file.exists());
+        System.out.println("Dossier existe : "+dir.exists());
+        System.out.println("path : "+path);
+
+        if(file.exists()){
+            loadGroceryList(al_groceryList);
+        }
+        else{
+            try{
+                file.createNewFile();
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }
 
         back = findViewById(R.id.button_back);
         add = findViewById(R.id.button_add);
@@ -158,8 +179,7 @@ public class GroceryListActivity extends AppCompatActivity {
                     Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
                 }
 
-
-
+                saveGroceryList(al_groceryList);
 
             } });
 
@@ -197,6 +217,126 @@ public class GroceryListActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void saveGroceryList(ArrayList<Product> liste){
+        File file = new File(path + "/groceryList.txt");
+
+        int tailleArray = liste.size();
+        String [] savedText = new String[tailleArray];
+        String temp;
+
+        for(int i=0; i < tailleArray; i++){
+            temp = liste.get(i).getName()+";"/*+liste.get(i).getCategory()+";"*/+liste.get(i).getQuantity()+";"+liste.get(i).getForm();
+            savedText[i] = temp;
+        }
+
+        save(file, savedText);
+    }
+
+    private void loadGroceryList(ArrayList<Product> liste){
+        File file = new File(path + "/groceryList.txt");
+
+        String[] loadText = load(file);
+
+        String tempName;
+        String tempCategory;
+        int tempQuantity;
+        String tempForm;
+        String[] temp;
+
+        for(int i=0; i < loadText.length;i++){
+            temp = loadText[i].split(";");
+            tempName = temp[0];
+            //tempCategory = temp[1];
+            tempQuantity = Integer.parseInt(temp[1]);
+            tempForm = temp[2];
+
+            liste.add(new Product(tempName,null,tempQuantity,null,null,tempForm));
+        }
+    }
+
+    private void save(File file, String[] data){
+        FileOutputStream fos = null;
+
+        try{
+            fos = openFileOutput("groceryList.txt",MODE_WORLD_READABLE);
+        }
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        try{
+            try{
+                System.out.println("dir : ");
+                for(int i = 0; i < data.length; i++){
+                    fos.write(data[i].getBytes());
+                    if(i < data.length){
+                        fos.write("\n".getBytes());
+                    }
+                }
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        finally {
+            try{
+                fos.close();
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String[] load(File file){
+        FileInputStream fis = null;
+
+        try{
+            fis = openFileInput(file.getName());
+        }
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader br = new BufferedReader(isr);
+
+        String test;
+        int azah = 0;
+
+        try{
+            while((test = br.readLine()) != null){
+                azah++;
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        try{
+            fis.getChannel().position(0);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        String[] array = new String[azah];
+        String line;
+        int i = 0;
+
+        try{
+            while((line = br.readLine()) != null){
+                array[i] = line;
+                i++;
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return array;
     }
 
 
