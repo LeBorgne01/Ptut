@@ -11,22 +11,22 @@
         android:weightSum="2">
 
         <TextView
-            android:id="@+id/textViewCol1"
+            android:id="@+id/textView_Col1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:padding="4dp"
-            android:text="Intitule"
+            android:text="name"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/textViewCol2"
+            android:id="@+id/textView_Col2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Montant"
+            android:text="quantity"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
