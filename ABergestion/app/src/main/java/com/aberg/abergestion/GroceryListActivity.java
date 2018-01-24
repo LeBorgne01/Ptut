@@ -27,10 +27,11 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private Button back;
     private ListView stockListView;
-    private ArrayList <Product>al_groceryList;
+    private ArrayList <Product> al_groceryList = new ArrayList<>();
     private Product p;
     private Product p2;
     private Product p3;
+    private Button add;
 
 
 
@@ -43,19 +44,25 @@ public class GroceryListActivity extends AppCompatActivity {
         p2= new Product("chips","alimentaire",4,null,null,"sachet");
         p3= new Product("lessive","menager",1,null,null,"bidon");
 
-        al_groceryList = new ArrayList<Product>();
+        //al_groceryList = new ArrayList<>();
         al_groceryList.add(p);
         al_groceryList.add(p2);
         al_groceryList.add(p3);
 
 
 
-        back=findViewById(R.id.button_back);
+        back = findViewById(R.id.button_back);
+        add = findViewById(R.id.button_add);
         stockListView = (ListView) findViewById(R.id.listViewStock);
+
+        showListView();
+
+        add.setOnClickListener(BtnAdd);
         back.setOnClickListener(BtnBack);
 
+    }
 
-
+    private void showListView(){
         // Définition des colonnes
         // SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
         // Ensuite on met le nombre de colonnes que l'on veut
@@ -73,8 +80,8 @@ public class GroceryListActivity extends AppCompatActivity {
         }
 
 
-       // matrixCursor.addRow(new Object[]{0, al_groceryList.get(0).getName(), al_groceryList.get(0).getQuantity()+" "+al_groceryList.get(0).getForm()});
-       // matrixCursor.addRow(new Object[]{2, "col1:ligne2", "col2:ligne2"});
+        // matrixCursor.addRow(new Object[]{0, al_groceryList.get(0).getName(), al_groceryList.get(0).getQuantity()+" "+al_groceryList.get(0).getForm()});
+        // matrixCursor.addRow(new Object[]{2, "col1:ligne2", "col2:ligne2"});
 
         // On prend les données des colonnes 1 et 2 ...
         String[]from = new String []{"col1","col2"};
@@ -99,6 +106,14 @@ public class GroceryListActivity extends AppCompatActivity {
 
     };
 
+    private View.OnClickListener BtnAdd = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            popupAddProduct();
+        }
+
+    };
+
     private void popupAddProduct(){
         //On instancie notre layout en tant que View
         LayoutInflater factory = LayoutInflater.from(GroceryListActivity.this);
@@ -111,13 +126,13 @@ public class GroceryListActivity extends AppCompatActivity {
         popup.setView(alertDialogView);
 
         //On donne un titre à l'AlertDialog
-        popup.setTitle("Ajouter un produit");
+        popup.setTitle(R.string.alertDialog_addProduct);
 
         //On modifie l'icône de l'AlertDialog pour le fun ;)
         //popup.setIcon(android.R.drawable.ic_dialog_alert);
 
         //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
-        popup.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
+        popup.setPositiveButton(R.string.text_add, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
                 //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
@@ -125,17 +140,63 @@ public class GroceryListActivity extends AppCompatActivity {
                 EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupQuantity);
                 EditText productType = alertDialogView.findViewById(R.id.editText_popupProductType);
 
-                //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
-                Toast.makeText(GroceryListActivity.this, productName.getText().toString()+" "+productQuantity.getText().toString()+" "+productType.getText().toString(), Toast.LENGTH_SHORT).show();
+
+
+                String name = productName.getText().toString();
+                String quantity = productQuantity.getText().toString();
+                String type = productType.getText().toString();
+
+                if(isEmpty(name) || isEmpty(quantity) || isEmpty(type)){
+                    alertDialog(getString(R.string.AlertDialog_champsrempli));
+                }
+                else{
+                    int temp = Integer.parseInt(quantity);
+                    al_groceryList.add(new Product(name,null,temp,null,null,type));
+                    showListView();
+
+                    //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                    Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
             } });
 
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
         popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //Lorsque l'on cliquera sur annuler on quittera l'application
-                finish();
+               //On ferme la popup
             } });
         popup.show();
+    }
+
+    //Fonction pour afficher un pop up avec un message et un bouton "Ok"
+    private void alertDialog(String message){
+        //On crée la fenetre
+        AlertDialog bugAlert = new AlertDialog.Builder(this).create();
+
+        //On applique le message en paramètre
+        bugAlert.setMessage(message);
+
+        //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
+        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        //On affiche la pop up
+        bugAlert.show();
+    }
+
+    //Fonction pour savoir si un String est vide
+    private Boolean isEmpty(String s){
+        if(s.length() != 0){
+            return false;
+        }
+        return true;
     }
 
 
