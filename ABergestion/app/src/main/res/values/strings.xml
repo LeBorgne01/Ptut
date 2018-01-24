@@ -50,7 +50,9 @@
     <string name="button_add">+</string>
 
     <string name="alertDialog_wrongPW">Mauvais mot de passe !</string>
-
+    <string name="editText_productName">Nom du produit</string>
+    <string name="editText_quantity">Quantité</string>
+    <string name="editText_productType">Forme du produit</string>
 
 
 </resources>
