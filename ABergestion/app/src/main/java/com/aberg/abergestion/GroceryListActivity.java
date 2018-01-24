@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -55,6 +56,10 @@ public class GroceryListActivity extends AppCompatActivity {
         dir.mkdir();
 
         File file = new File(path +"groceryList.txt");
+
+        quantitySort(al_groceryList);
+
+
 
         System.out.println("Fichier existe : "+file.exists());
         System.out.println("Dossier existe : "+dir.exists());
@@ -191,6 +196,67 @@ public class GroceryListActivity extends AppCompatActivity {
         popup.show();
     }
 
+    private void nameSort (ArrayList <Product> p){
+        						// Tri par bulles.
+            Product temp;									// Valeur pour la permutation.
+            boolean flag = true;							// True si il y a eu une permutation lors du passage.
+
+            while (flag) {								// Tant qu'il y a eu au moins une permutation de nombre alors le tableau n'est pas trié donc on continue.
+                flag = false;							// On informe que pour le moment aucune permutation n'as eu lieu.
+
+                for (int i = 0; i < p.size()-1; i++) {	// Pour chaque case du tableau - 1.
+                    if (p.get(i).getName().compareTo( p.get(i+1).getName())>1)			// Si la case suivante est supérieur à la case actuelle.
+                    {
+                        p.set(i, p.set(i+1, p.get(i)));
+
+                        flag = true;					// On informe qu'une permutation à eu lieu.
+                    }
+                }
+            }
+
+
+
+
+    }
+
+    private void quantitySort(ArrayList <Product>p){
+        Product temp;
+        boolean flag = true;
+
+        while (flag) {
+            flag = false;
+
+            for (int i = 0; i < p.size()-1; i++) {
+                if (p.get(i).getQuantity()> p.get(i+1).getQuantity())
+                {
+                    p.set(i, p.set(i+1, p.get(i)));
+
+                    flag = true;
+                }
+            }
+        }
+
+    }
+
+    private void categorySort (ArrayList <Product> p) {
+        // Tri par bulles.
+        Product temp;                                    // Valeur pour la permutation.
+        boolean flag = true;                            // True si il y a eu une permutation lors du passage.
+
+        while (flag) {                                // Tant qu'il y a eu au moins une permutation de nombre alors le tableau n'est pas trié donc on continue.
+            flag = false;                            // On informe que pour le moment aucune permutation n'as eu lieu.
+
+            for (int i = 0; i < p.size() - 1; i++) {    // Pour chaque case du tableau - 1.
+                if (p.get(i).getCategory().compareTo(p.get(i + 1).getCategory()) > 1)            // Si la case suivante est supérieur à la case actuelle.
+                {
+                    p.set(i, p.set(i + 1, p.get(i)));
+
+                    flag = true;                    // On informe qu'une permutation à eu lieu.
+                }
+            }
+        }
+    }
+
     //Fonction pour afficher un pop up avec un message et un bouton "Ok"
     private void alertDialog(String message){
         //On crée la fenetre
@@ -204,6 +270,7 @@ public class GroceryListActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
             }
         });
 
@@ -218,7 +285,7 @@ public class GroceryListActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    
     private void saveGroceryList(ArrayList<Product> liste){
         File file = new File(path + "/groceryList.txt");
 
@@ -337,7 +404,11 @@ public class GroceryListActivity extends AppCompatActivity {
         }
 
         return array;
+
     }
-
-
 }
+
+
+
+
+
