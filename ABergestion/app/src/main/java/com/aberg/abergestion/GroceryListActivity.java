@@ -1,16 +1,18 @@
 package com.aberg.abergestion;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,5 +82,45 @@ public class GroceryListActivity extends AppCompatActivity {
         }
 
     };
+
+    private void popupAddProduct(){
+        //On instancie notre layout en tant que View
+        LayoutInflater factory = LayoutInflater.from(GroceryListActivity.this);
+        final View alertDialogView = factory.inflate(R.layout.alertdialog_add_product, null);
+
+        //Création de l'AlertDialog
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+
+        //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
+        popup.setView(alertDialogView);
+
+        //On donne un titre à l'AlertDialog
+        popup.setTitle("Ajouter un produit");
+
+        //On modifie l'icône de l'AlertDialog pour le fun ;)
+        //popup.setIcon(android.R.drawable.ic_dialog_alert);
+
+        //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
+        popup.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
+                EditText productName = alertDialogView.findViewById(R.id.editText_popupProductName);
+                EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupQuantity);
+                EditText productType = alertDialogView.findViewById(R.id.editText_popupProductType);
+
+                //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                Toast.makeText(GroceryListActivity.this, productName.getText().toString()+" "+productQuantity.getText().toString()+" "+productType.getText().toString(), Toast.LENGTH_SHORT).show();
+            } });
+
+        //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
+        popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Lorsque l'on cliquera sur annuler on quittera l'application
+                finish();
+            } });
+        popup.show();
+    }
+
 
 }
