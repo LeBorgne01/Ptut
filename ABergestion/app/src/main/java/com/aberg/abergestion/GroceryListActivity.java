@@ -25,7 +25,11 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private Button back;
     private ListView stockListView;
-    private List<String> al_groceryList;
+    private ArrayList <Product>al_groceryList;
+    private Product p;
+    private Product p2;
+    private Product p3;
+
 
 
     @Override
@@ -33,15 +37,22 @@ public class GroceryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
 
-        al_groceryList = new ArrayList<String>();
+        p= new Product("ravioli","alimentaire",2,null,null,"conserve");
+        p2= new Product("chips","alimentaire",4,null,null,"sachet");
+        p3= new Product("lessive","menager",1,null,null,"bidon");
+
+        al_groceryList = new ArrayList<Product>();
+        al_groceryList.add(p);
+        al_groceryList.add(p2);
+        al_groceryList.add(p3);
+
+
 
         back=findViewById(R.id.button_back);
         stockListView = (ListView) findViewById(R.id.listViewStock);
         back.setOnClickListener(BtnBack);
 
-        al_groceryList.add("eau");
-        al_groceryList.add("chips");
-        al_groceryList.add("ravioli");
+
 
         // Définition des colonnes
         // SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
@@ -55,8 +66,13 @@ public class GroceryListActivity extends AppCompatActivity {
         startManagingCursor(matrixCursor);
 
         //On ajoute des objets au MatrixCursor
-        matrixCursor.addRow(new Object[]{1, "col1:ligne1", "col2:ligne1"});
-        matrixCursor.addRow(new Object[]{2, "col1:ligne2", "col2:ligne2"});
+        for(int i=0;i<al_groceryList.size();i++){
+            matrixCursor.addRow(new Object[]{i, al_groceryList.get(i).getName(), al_groceryList.get(i).getQuantity()+" "+al_groceryList.get(i).getForm()});
+        }
+
+
+       // matrixCursor.addRow(new Object[]{0, al_groceryList.get(0).getName(), al_groceryList.get(0).getQuantity()+" "+al_groceryList.get(0).getForm()});
+       // matrixCursor.addRow(new Object[]{2, "col1:ligne2", "col2:ligne2"});
 
         // On prend les données des colonnes 1 et 2 ...
         String[]from = new String []{"col1","col2"};
