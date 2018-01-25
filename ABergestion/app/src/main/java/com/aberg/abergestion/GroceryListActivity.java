@@ -6,12 +6,16 @@ import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SoundEffectConstants;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,12 +32,16 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private Button back;
     private ListView stockListView;
-    private ArrayList <Product> al_groceryList = new ArrayList<>();
+    private ArrayList<Product> al_groceryList = new ArrayList<>();
+    private ArrayList<String> dataTri=new ArrayList<>();
     private Product p;
     private Product p2;
     private Product p3;
     private Button add;
+    private Spinner spnSort;
+    private ArrayAdapter<String> adapt;
 
+    private String tri;
 
 
     @Override
@@ -41,9 +49,9 @@ public class GroceryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
 
-        p= new Product("ravioli","alimentaire",2,null,null,"conserve");
-        p2= new Product("chips","alimentaire",4,null,null,"sachet");
-        p3= new Product("lessive","menager",1,null,null,"bidon");
+        p = new Product("ravioli", "alimentaire", 2, null, null, "conserve");
+        p2 = new Product("chips", "alimentaire", 4, null, null, "sachet");
+        p3 = new Product("lessive", "menager", 1, null, null, "bidon");
 
         //al_groceryList = new ArrayList<>();
         al_groceryList.add(p);
@@ -53,23 +61,32 @@ public class GroceryListActivity extends AppCompatActivity {
         quantitySort(al_groceryList);
 
 
-
         back = findViewById(R.id.button_back);
         add = findViewById(R.id.button_add);
         stockListView = (ListView) findViewById(R.id.listViewStock);
-
-        showListView();
+        spnSort= findViewById(R.id.spinner_sort);
 
         add.setOnClickListener(BtnAdd);
         back.setOnClickListener(BtnBack);
+        spnSort.setOnItemClickListener();
+
+        initDataSort();
+        adapt = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataTri);
+        spnSort.setAdapter(adapt);
+
+
+        nameSort(al_groceryList);
+        showListView();
+
+
 
     }
 
-    private void showListView(){
+    private void showListView() {
         // Définition des colonnes
         // SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
         // Ensuite on met le nombre de colonnes que l'on veut
-        String[] colums = new String[]{"_id","col1","col2"};
+        String[] colums = new String[]{"_id", "col1", "col2"};
 
         // Définition des données du tableau
         // On affecte au matrixCursor les colonnes que l'on vient de créer
@@ -78,8 +95,8 @@ public class GroceryListActivity extends AppCompatActivity {
         startManagingCursor(matrixCursor);
 
         //On ajoute des objets au MatrixCursor
-        for(int i=0;i<al_groceryList.size();i++){
-            matrixCursor.addRow(new Object[]{i, al_groceryList.get(i).getName(), al_groceryList.get(i).getQuantity()+" "+al_groceryList.get(i).getForm()});
+        for (int i = 0; i < al_groceryList.size(); i++) {
+            matrixCursor.addRow(new Object[]{i, al_groceryList.get(i).getName(), al_groceryList.get(i).getForm() + ": " +al_groceryList.get(i).getQuantity()});
         }
 
 
@@ -87,19 +104,19 @@ public class GroceryListActivity extends AppCompatActivity {
         // matrixCursor.addRow(new Object[]{2, "col1:ligne2", "col2:ligne2"});
 
         // On prend les données des colonnes 1 et 2 ...
-        String[]from = new String []{"col1","col2"};
+        String[] from = new String[]{"col1", "col2"};
         // ... pour les placer dans les TextView définis dans "row_item.xml"
-        int[] to = new int[] { R.id.textView_Col1, R.id.textView_Col2};
+        int[] to = new int[]{R.id.textView_Col1, R.id.textView_Col2};
 
         // On crée l'objet SimpleCursorAdapter
         // On met le context (this ici), ensuite la définition des lignes de la liste, ensuite on ajoute les lignes, on définit les colonnes, on les lient aux textView, on met le flag à 0
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,R.layout.row_item,matrixCursor,from,to,0);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.row_item, matrixCursor, from, to, 0);
 
         // On lie la liste avec l'adapter
         stockListView.setAdapter(adapter);
     }
 
-    private View.OnClickListener BtnBack = new View.OnClickListener(){
+    private View.OnClickListener BtnBack = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(GroceryListActivity.this, StockActivity.class);
@@ -109,7 +126,7 @@ public class GroceryListActivity extends AppCompatActivity {
 
     };
 
-    private View.OnClickListener BtnAdd = new View.OnClickListener(){
+    private View.OnClickListener BtnAdd = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             popupAddProduct();
@@ -117,7 +134,7 @@ public class GroceryListActivity extends AppCompatActivity {
 
     };
 
-    private void popupAddProduct(){
+    private void popupAddProduct() {
         //On instancie notre layout en tant que View
         LayoutInflater factory = LayoutInflater.from(GroceryListActivity.this);
         final View alertDialogView = factory.inflate(R.layout.alertdialog_add_product, null);
@@ -144,17 +161,15 @@ public class GroceryListActivity extends AppCompatActivity {
                 EditText productType = alertDialogView.findViewById(R.id.editText_popupProductType);
 
 
-
                 String name = productName.getText().toString();
                 String quantity = productQuantity.getText().toString();
                 String type = productType.getText().toString();
 
-                if(isEmpty(name) || isEmpty(quantity) || isEmpty(type)){
+                if (isEmpty(name) || isEmpty(quantity) || isEmpty(type)) {
                     alertDialog(getString(R.string.AlertDialog_champsrempli));
-                }
-                else{
+                } else {
                     int temp = Integer.parseInt(quantity);
-                    al_groceryList.add(new Product(name,null,temp,null,null,type));
+                    al_groceryList.add(new Product(name, null, temp, null, null, type));
                     showListView();
 
                     //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
@@ -162,53 +177,50 @@ public class GroceryListActivity extends AppCompatActivity {
                 }
 
 
-
-
-            } });
+            }
+        });
 
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
         popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-               //On ferme la popup
-            } });
+                //On ferme la popup
+            }
+        });
         popup.show();
     }
 
-<<<<<<< HEAD
-    private void nameSort (ArrayList <Product> p){
-        						// Tri par bulles.
-            Product temp;									// Valeur pour la permutation.
-            boolean flag = true;							// True si il y a eu une permutation lors du passage.
 
-            while (flag) {								// Tant qu'il y a eu au moins une permutation de nombre alors le tableau n'est pas trié donc on continue.
-                flag = false;							// On informe que pour le moment aucune permutation n'as eu lieu.
-
-                for (int i = 0; i < p.size()-1; i++) {	// Pour chaque case du tableau - 1.
-                    if (p.get(i).getName().compareTo( p.get(i+1).getName())>1)			// Si la case suivante est supérieur à la case actuelle.
-                    {
-                        p.set(i, p.set(i+1, p.get(i)));
-
-                        flag = true;					// On informe qu'une permutation à eu lieu.
-                    }
-                }
-            }
-
-
-
-
-    }
-
-    private void quantitySort(ArrayList <Product>p){
+    private void nameSort(ArrayList<Product> p) {
+        // Tri par bulles.
         Product temp;
         boolean flag = true;
 
         while (flag) {
             flag = false;
 
-            for (int i = 0; i < p.size()-1; i++) {
-                if (p.get(i).getQuantity()> p.get(i+1).getQuantity())
+            for (int i = 0; i < p.size() - 1; i++) {
+                if (p.get(i).getName().compareTo(p.get(i + 1).getName()) > 1)
                 {
-                    p.set(i, p.set(i+1, p.get(i)));
+                    p.set(i, p.set(i + 1, p.get(i)));
+
+                    flag = true;
+                }
+            }
+        }
+
+
+    }
+
+    private void quantitySort(ArrayList<Product> p) {
+        Product temp;
+        boolean flag = true;
+
+        while (flag) {
+            flag = false;
+
+            for (int i = 0; i < p.size() - 1; i++) {
+                if (p.get(i).getQuantity() > p.get(i + 1).getQuantity()) {
+                    p.set(i, p.set(i + 1, p.get(i)));
 
                     flag = true;
                 }
@@ -217,28 +229,28 @@ public class GroceryListActivity extends AppCompatActivity {
 
     }
 
-    private void categorySort (ArrayList <Product> p){
+    private void categorySort(ArrayList<Product> p) {
         // Tri par bulles.
-        Product temp;									// Valeur pour la permutation.
-        boolean flag = true;							// True si il y a eu une permutation lors du passage.
+        Product temp;
+        boolean flag = true;
 
-        while (flag) {								// Tant qu'il y a eu au moins une permutation de nombre alors le tableau n'est pas trié donc on continue.
-            flag = false;							// On informe que pour le moment aucune permutation n'as eu lieu.
+        while (flag) {
+            flag = false;
 
-            for (int i = 0; i < p.size()-1; i++) {	// Pour chaque case du tableau - 1.
-                if (p.get(i).getCategory().compareTo( p.get(i+1).getCategory())>1)			// Si la case suivante est supérieur à la case actuelle.
+            for (int i = 0; i < p.size() - 1; i++) {
+                if (p.get(i).getCategory().compareTo(p.get(i + 1).getCategory()) > 1)
                 {
-                    p.set(i, p.set(i+1, p.get(i)));
+                    p.set(i, p.set(i + 1, p.get(i)));
 
-                    flag = true;					// On informe qu'une permutation à eu lieu.
+                    flag = true;
                 }
             }
         }
 
+    }
 
-=======
-    //Fonction pour afficher un pop up avec un message et un bouton "Ok"
-    private void alertDialog(String message){
+
+    private void alertDialog(String message) {
         //On crée la fenetre
         AlertDialog bugAlert = new AlertDialog.Builder(this).create();
 
@@ -246,7 +258,7 @@ public class GroceryListActivity extends AppCompatActivity {
         bugAlert.setMessage(message);
 
         //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
-        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener(){
+        bugAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -258,18 +270,58 @@ public class GroceryListActivity extends AppCompatActivity {
     }
 
     //Fonction pour savoir si un String est vide
-    private Boolean isEmpty(String s){
-        if(s.length() != 0){
+    private Boolean isEmpty(String s) {
+        if (s.length() != 0) {
             return false;
         }
         return true;
     }
 
->>>>>>> 330116773512700a66652a45195830f24ec08c2d
+
+    private void initDataSort(){
 
 
+            dataTri.add("Trier par: Noms");
+            dataTri.add("Trier par:Categories");
+             dataTri.add("Trier par:Quantités");
     }
+    private View.OnClickListener spinnerSort = new View.OnClickListener(){
+
+
+        @Override
+        public void onClick(View v){
+
+            String selected = (spnSort.getSelectedItem().toString());
+            System.out.print(selected);
+            System.out.print("sdgdg");
+            Log.i("test", "onClick: sort "+selected);
+
+           switch (selected) {
+               case "Trier par: Noms":
+                   nameSort(al_groceryList);
+                   break;
+               case "Trier par:Categories":
+                   categorySort(al_groceryList);
+                   break;
+               case "Trier par:Quantités":
+                   quantitySort(al_groceryList);
+                   break;
+               default:
+                   break;
+
+
+           }
+           GroceryListActivity.this.showListView();
+        }
+
+
+
+    };
+
+
 }
+
+
 
 
 
