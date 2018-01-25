@@ -1,5 +1,7 @@
 package com.aberg.abergestion;
 
+import java.util.Collections;
+
 /**
  * Created by Mickael on 20/12/2017.
  */
@@ -69,4 +71,6 @@ public  class Product {
     public void setForm(String form) {
         this.form = form;
     }
+
+
 }

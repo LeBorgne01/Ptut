@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         }
-        
+
 
         //On lie les champs XML avec les champs JAVA
         valider = findViewById(R.id.button_valider1);
