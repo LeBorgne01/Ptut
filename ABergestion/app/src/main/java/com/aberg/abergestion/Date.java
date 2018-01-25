@@ -27,7 +27,7 @@ public class Date implements Serializable{
         return annee;
     }
 
-    public String toDate(){
+    public String dateToString(){
         String s = Integer.toString(jour)+'/'+Integer.toString(mois)+'/'+Integer.toString(annee);
         return s;
     }

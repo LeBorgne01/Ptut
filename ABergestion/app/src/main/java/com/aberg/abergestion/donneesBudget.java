@@ -36,6 +36,6 @@ public class donneesBudget implements Serializable{
     }
 
     public void displayDonneesBudget(){
-        System.out.println("Intitule : " + intitule+"\nDate : "+date.toDate()+"\nMontant :"+montant+"\nPeriodicite :"+periodicite);
+        System.out.println("Intitule : " + intitule+"\nDate : "+date.dateToString()+"\nMontant :"+montant+"\nPeriodicite :"+periodicite);
     }
 }

@@ -66,17 +66,7 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
         //TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         listDR = new ArrayList<>();
-        File dir = new File(path);
-        dir.mkdir();
-
-        File file = new File(path +"listDR.txt");
-
-        if(file.exists()){
-            loadListDR(listDR);
-            System.out.println("ok");
-        }
-        else System.out.println("combeubeu");
-
+        loadListDR(listDR);
         setContentView(R.layout.activity_add_depense);
 
         /*if(listDR != null){
@@ -147,6 +137,7 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
                 donneesBudget data= new donneesBudget(contenuIntitule,d,contenuMontant,contenuSwitchPerio);
                 //data.displayDonneesBudget();
                 listDR.add(data);
+                saveListDR(listDR);
                 Intent intent = new Intent(AddDepenseActivity.this,DepenseRevenuActivity.class);
                 intent.putExtra("listDR",listDR);
                 startActivity(intent);
@@ -158,151 +149,84 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
     public Date toDate(String s){
         String[] tabS = s.split("/");
         Date d = new Date(Integer.parseInt(tabS[0]),Integer.parseInt(tabS[1]),Integer.parseInt(tabS[2]));
+        System.out.println(d);
         return d;
     }
 
-    private void saveListDR(User u) throws IOException {
-
-        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = user.edit();
-        editor.putString("NAME", u.getName());
-        editor.putString("FIRSTNAME", u.getFirstName());
-        editor.putString("PASSWORD", u.getPassword());
-        editor.commit();
-    }
-
-    private boolean loadListDR() {
-        SharedPreferences listDR = PreferenceManager.getDefaultSharedPreferences(this);
-        String nom = listDR.getString("NAME","n/a");
-
-        if(nom == "n/a"){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
-
-/*
-    private void saveListDR(ArrayList<donneesBudget> listDR){
-        File file = new File(path + "/listDR.txt");
-
-        int tailleArray = listDR.size();
+    private void saveListDR(ArrayList<donneesBudget> liste){
+        //On récupère la taille de la liste puis on crée un tableau de string aussi grand
+        int tailleArray = liste.size();
         String [] savedText = new String[tailleArray];
+
+        //On déclare la variable temporaire pour chaque ligne
         String temp;
 
+        //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
-            temp = listDR.get(i).getIntitule()+";"+listDR.get(i).getDate()+";"+listDR.get(i).getMontant()+";"+listDR.get(i).isPeriodicite();
+            //Ici on écrit un élément et on sépare deux éléments avec des points virgule
+            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite();
+
+            //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;
         }
 
-        save(file, savedText);
+        //On ouvre l'écriture dans notre fichier utilisateur
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = user.edit();
+
+        //On indique la taille de notre liste de course
+        editor.putInt("NOMBRE_BUDGETS", liste.size());
+
+        //On ajoute tous les éléments à cette liste
+        for(int i=0; i<liste.size();i++){
+            editor.putString("LISTE_DR_"+i,savedText[i]);
+        }
+
+        //On met à jour le fichier
+        editor.commit();
     }
 
-    private void save(File file, String[] listDR){
-        FileOutputStream fos = null;
+    private void loadListDR(ArrayList<donneesBudget> liste){
+        //On ouvre le fichier de preference
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
 
-        try{
-            fos = openFileOutput("listDR.txt",MODE_PRIVATE);
+        //On prend le nombre d'éléments de la liste de courses (par défaut 0)
+        String[] loadText = new String[user.getInt("NOMBRE_BUDGETS",0)];
+
+        //On rempli notre tableau de string avec les éléments des préférences de notre utilisateur
+        for(int i=0; i < loadText.length;i++){
+            loadText[i] = user.getString("LISTE_DR_"+i,null);
         }
-        catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
 
-        try{
-            try{
-                System.out.println("dir : ");
-                for(int i = 0; i < listDR.length; i++){
-                    fos.write(listDR[i].getBytes());
-                    if(i < listDR.length){
-                        fos.write("\n".getBytes());
-                    }
-                }
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-        finally {
-            try{
-                fos.close();
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void loadListDR(ArrayList<donneesBudget> listDR){
-        File file = new File(path + "/listDR.txt");
-
-        String[] loadText = load(file);
-
+        //On déclare nos variables pour créer nos elements de liste de course
         String tempIntitule;
-        Date tempDate = new Date(0,0,0);
+        Date tempDate;
         double tempMontant;
         boolean tempPeriodicite;
+
+        //Ce tableau permet de récupérer le splitage de la chaine du tableau loadText
         String[] temp;
 
         for(int i=0; i < loadText.length;i++){
-            temp = loadText[i].split(";");
-            tempIntitule = temp[0];
-            tempDate = toDate(temp[1]);
-            tempMontant = Double.parseDouble(temp[2]);
-            tempPeriodicite = Boolean.parseBoolean(temp[3]);
+            //Si notre ligne est null on ne fait rien
+            if(loadText[i] != null){
+                //On split notre chaine de caractère grâce aux ; qu'on a mis à la sauvegarde
+                temp = loadText[i].split(";");
 
-            listDR.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite));
+                //On récupère nos variables
+                tempIntitule = temp[0];
+                System.out.println(tempIntitule+"\n");
+                tempDate = new Date(0,0,0);
+                System.out.println(temp[1]);
+                tempMontant = Double.parseDouble(temp[2]);
+                tempPeriodicite = Boolean.parseBoolean(temp[3]);
+
+                //On ajoute notre produit à l'arrayList
+                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite));
+            }
+
         }
     }
 
-    private String[] load(File file){
-        FileInputStream fis = null;
 
-        try{
-            fis = openFileInput(file.getName());
-        }
-        catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-
-        InputStreamReader isr = new InputStreamReader(fis);
-        BufferedReader br = new BufferedReader(isr);
-
-        String test;
-        int azah = 0;
-
-        try{
-            while((test = br.readLine()) != null){
-                azah++;
-            }
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        try{
-            fis.getChannel().position(0);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        String[] array = new String[azah];
-        String line;
-        int i = 0;
-
-        try{
-            while((line = br.readLine()) != null){
-                array[i] = line;
-                i++;
-            }
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        return array;
-
-    }
-    */
 }
