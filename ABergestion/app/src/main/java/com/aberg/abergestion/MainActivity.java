@@ -195,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("NAME", u.getName());
         editor.putString("FIRSTNAME", u.getFirstName());
         editor.putString("PASSWORD", u.getPassword());
+        editor.putInt("NOMBRE_BUDGETS",0);
+        editor.putInt("NOMBRE_STOCKS", 0);
+        editor.putInt("ELEMENTS_LISTE_COURSE", 0);
         editor.commit();
     }
 

@@ -2,9 +2,11 @@ package com.aberg.abergestion;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -50,32 +52,10 @@ public class GroceryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
 
+        //On charge notre liste de course
         al_groceryList = new ArrayList<>();
+        loadGroceryList(al_groceryList);
 
-        File dir = new File(path);
-        dir.mkdir();
-
-        File file = new File(path +"groceryList.txt");
-
-        quantitySort(al_groceryList);
-
-
-
-        System.out.println("Fichier existe : "+file.exists());
-        System.out.println("Dossier existe : "+dir.exists());
-        System.out.println("path : "+path);
-
-        if(file.exists()){
-            loadGroceryList(al_groceryList);
-        }
-        else{
-            try{
-                file.createNewFile();
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-        }
 
         back = findViewById(R.id.button_back);
         add = findViewById(R.id.button_add);
@@ -178,13 +158,15 @@ public class GroceryListActivity extends AppCompatActivity {
                 else{
                     int temp = Integer.parseInt(quantity);
                     al_groceryList.add(new Product(name,null,temp,null,null,type));
+                    saveGroceryList(al_groceryList);
                     showListView();
 
                     //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
                     Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
+
                 }
 
-                saveGroceryList(al_groceryList);
+
 
             } });
 
@@ -285,126 +267,78 @@ public class GroceryListActivity extends AppCompatActivity {
         }
         return true;
     }
-    
-    private void saveGroceryList(ArrayList<Product> liste){
-        File file = new File(path + "/groceryList.txt");
 
+    private void saveGroceryList(ArrayList<Product> liste){
+        //On récupère la taille de la liste puis on crée un tableau de string aussi grand
         int tailleArray = liste.size();
         String [] savedText = new String[tailleArray];
+
+        //On déclare la variable temporaire pour chaque ligne
         String temp;
 
+        //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
+            //Ici on écrit un élément et on sépare deux éléments avec des points virgule
             temp = liste.get(i).getName()+";"/*+liste.get(i).getCategory()+";"*/+liste.get(i).getQuantity()+";"+liste.get(i).getForm();
+
+            //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;
         }
 
-        save(file, savedText);
+        //On ouvre l'écriture dans notre fichier utilisateur
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = user.edit();
+
+        //On indique la taille de notre liste de course
+        editor.putInt("ELEMENTS_LISTE_COURSE", liste.size());
+
+        //On ajoute tous les éléments à cette liste
+        for(int i=0; i<liste.size();i++){
+            editor.putString("LISTE_COURSE_"+i,savedText[i]);
+        }
+
+        //On met à jour le fichier
+        editor.commit();
     }
 
     private void loadGroceryList(ArrayList<Product> liste){
-        File file = new File(path + "/groceryList.txt");
+        //On ouvre le fichier de preference
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String[] loadText = load(file);
+        //On prend le nombre d'éléments de la liste de courses (par défaut 0)
+        String[] loadText = new String[user.getInt("ELEMENTS_LISTE_COURSE",0)];
 
+        //On rempli notre tableau de string avec les éléments des préférences de notre utilisateur
+        for(int i=0; i < loadText.length;i++){
+            loadText[i] = user.getString("LISTE_COURSE_"+i,null);
+        }
+
+        //On déclare nos variables pour créer nos elements de liste de course
         String tempName;
         String tempCategory;
         int tempQuantity;
         String tempForm;
+
+        //Ce tableau permet de récupérer le splitage de la chaine du tableau loadText
         String[] temp;
 
         for(int i=0; i < loadText.length;i++){
-            temp = loadText[i].split(";");
-            tempName = temp[0];
-            //tempCategory = temp[1];
-            tempQuantity = Integer.parseInt(temp[1]);
-            tempForm = temp[2];
+            //Si notre ligne est null on ne fait rien
+            if(loadText[i] != null){
+                //On split notre chaine de caractère grâce aux ; qu'on a mis à la sauvegarde
+                temp = loadText[i].split(";");
 
-            liste.add(new Product(tempName,null,tempQuantity,null,null,tempForm));
-        }
-    }
+                //On récupère nos variables
+                tempName = temp[0];
+                //tempCategory = temp[1];
+                tempQuantity = Integer.parseInt(temp[1]);
+                tempForm = temp[2];
 
-    private void save(File file, String[] data){
-        FileOutputStream fos = null;
-
-        try{
-            fos = openFileOutput("groceryList.txt",MODE_WORLD_READABLE);
-        }
-        catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-
-        try{
-            try{
-                System.out.println("dir : ");
-                for(int i = 0; i < data.length; i++){
-                    fos.write(data[i].getBytes());
-                    if(i < data.length){
-                        fos.write("\n".getBytes());
-                    }
-                }
+                //On ajoute notre produit à l'arrayList
+                liste.add(new Product(tempName,null,tempQuantity,null,null,tempForm));
             }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-        finally {
-            try{
-                fos.close();
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
 
-    private String[] load(File file){
-        FileInputStream fis = null;
-
-        try{
-            fis = openFileInput(file.getName());
         }
-        catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-
-        InputStreamReader isr = new InputStreamReader(fis);
-        BufferedReader br = new BufferedReader(isr);
-
-        String test;
-        int azah = 0;
-
-        try{
-            while((test = br.readLine()) != null){
-                azah++;
-            }
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        try{
-            fis.getChannel().position(0);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        String[] array = new String[azah];
-        String line;
-        int i = 0;
-
-        try{
-            while((line = br.readLine()) != null){
-                array[i] = line;
-                i++;
-            }
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        return array;
-
     }
 }
 
