@@ -2,8 +2,11 @@ package com.aberg.abergestion;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,6 +21,13 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,8 +42,12 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private Button back;
     private ListView stockListView;
+<<<<<<< HEAD
     private ArrayList<Product> al_groceryList = new ArrayList<>();
     private ArrayList<String> dataTri=new ArrayList<>();
+=======
+    private ArrayList <Product> al_groceryList;
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
     private Product p;
     private Product p2;
     private Product p3;
@@ -41,7 +55,11 @@ public class GroceryListActivity extends AppCompatActivity {
     private Spinner spnSort;
     private ArrayAdapter<String> adapt;
 
+<<<<<<< HEAD
     private String tri;
+=======
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ABergestion";
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
 
 
     @Override
@@ -49,6 +67,7 @@ public class GroceryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
 
+<<<<<<< HEAD
         p = new Product("ravioli", "alimentaire", 2, null, null, "conserve");
         p2 = new Product("chips", "alimentaire", 4, null, null, "sachet");
         p3 = new Product("lessive", "menager", 1, null, null, "bidon");
@@ -60,6 +79,11 @@ public class GroceryListActivity extends AppCompatActivity {
 
         quantitySort(al_groceryList);
 
+=======
+        //On charge notre liste de course
+        al_groceryList = new ArrayList<>();
+        loadGroceryList(al_groceryList);
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
 
         back = findViewById(R.id.button_back);
         add = findViewById(R.id.button_add);
@@ -169,13 +193,18 @@ public class GroceryListActivity extends AppCompatActivity {
                     alertDialog(getString(R.string.AlertDialog_champsrempli));
                 } else {
                     int temp = Integer.parseInt(quantity);
+<<<<<<< HEAD
                     al_groceryList.add(new Product(name, null, temp, null, null, type));
+=======
+                    al_groceryList.add(new Product(name,null,temp,null,null,type));
+                    saveGroceryList(al_groceryList);
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
                     showListView();
 
                     //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
                     Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
-                }
 
+                }
 
             }
         });
@@ -189,6 +218,13 @@ public class GroceryListActivity extends AppCompatActivity {
         popup.show();
     }
 
+<<<<<<< HEAD
+=======
+    private void nameSort (ArrayList <Product> p){
+        						// Tri par bulles.
+            Product temp;									// Valeur pour la permutation.
+            boolean flag = true;							// True si il y a eu une permutation lors du passage.
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
 
     private void nameSort(ArrayList<Product> p) {
         // Tri par bulles.
@@ -229,6 +265,7 @@ public class GroceryListActivity extends AppCompatActivity {
 
     }
 
+<<<<<<< HEAD
     private void categorySort(ArrayList<Product> p) {
         // Tri par bulles.
         Product temp;
@@ -243,14 +280,36 @@ public class GroceryListActivity extends AppCompatActivity {
                     p.set(i, p.set(i + 1, p.get(i)));
 
                     flag = true;
+=======
+    private void categorySort (ArrayList <Product> p) {
+        // Tri par bulles.
+        Product temp;                                    // Valeur pour la permutation.
+        boolean flag = true;                            // True si il y a eu une permutation lors du passage.
+
+        while (flag) {                                // Tant qu'il y a eu au moins une permutation de nombre alors le tableau n'est pas trié donc on continue.
+            flag = false;                            // On informe que pour le moment aucune permutation n'as eu lieu.
+
+            for (int i = 0; i < p.size() - 1; i++) {    // Pour chaque case du tableau - 1.
+                if (p.get(i).getCategory().compareTo(p.get(i + 1).getCategory()) > 1)            // Si la case suivante est supérieur à la case actuelle.
+                {
+                    p.set(i, p.set(i + 1, p.get(i)));
+
+                    flag = true;                    // On informe qu'une permutation à eu lieu.
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
                 }
             }
         }
+    }
 
+<<<<<<< HEAD
     }
 
 
     private void alertDialog(String message) {
+=======
+    //Fonction pour afficher un pop up avec un message et un bouton "Ok"
+    private void alertDialog(String message){
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
         //On crée la fenetre
         AlertDialog bugAlert = new AlertDialog.Builder(this).create();
 
@@ -262,6 +321,7 @@ public class GroceryListActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
             }
         });
 
@@ -277,13 +337,88 @@ public class GroceryListActivity extends AppCompatActivity {
         return true;
     }
 
+<<<<<<< HEAD
 
     private void initDataSort(){
+=======
+    private void saveGroceryList(ArrayList<Product> liste){
+        //On récupère la taille de la liste puis on crée un tableau de string aussi grand
+        int tailleArray = liste.size();
+        String [] savedText = new String[tailleArray];
 
+        //On déclare la variable temporaire pour chaque ligne
+        String temp;
 
+        //On parcourt le tableau pour y ajouter chaque element
+        for(int i=0; i < tailleArray; i++){
+            //Ici on écrit un élément et on sépare deux éléments avec des points virgule
+            temp = liste.get(i).getName()+";"/*+liste.get(i).getCategory()+";"*/+liste.get(i).getQuantity()+";"+liste.get(i).getForm();
+
+            //On affecte cette chaine au tableau sauvegarder
+            savedText[i] = temp;
+        }
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
+
+        //On ouvre l'écriture dans notre fichier utilisateur
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = user.edit();
+
+<<<<<<< HEAD
             dataTri.add("Trier par: Noms");
             dataTri.add("Trier par:Categories");
              dataTri.add("Trier par:Quantités");
+=======
+        //On indique la taille de notre liste de course
+        editor.putInt("ELEMENTS_LISTE_COURSE", liste.size());
+
+        //On ajoute tous les éléments à cette liste
+        for(int i=0; i<liste.size();i++){
+            editor.putString("LISTE_COURSE_"+i,savedText[i]);
+        }
+
+        //On met à jour le fichier
+        editor.commit();
+    }
+
+    private void loadGroceryList(ArrayList<Product> liste){
+        //On ouvre le fichier de preference
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //On prend le nombre d'éléments de la liste de courses (par défaut 0)
+        String[] loadText = new String[user.getInt("ELEMENTS_LISTE_COURSE",0)];
+
+        //On rempli notre tableau de string avec les éléments des préférences de notre utilisateur
+        for(int i=0; i < loadText.length;i++){
+            loadText[i] = user.getString("LISTE_COURSE_"+i,null);
+        }
+
+        //On déclare nos variables pour créer nos elements de liste de course
+        String tempName;
+        String tempCategory;
+        int tempQuantity;
+        String tempForm;
+
+        //Ce tableau permet de récupérer le splitage de la chaine du tableau loadText
+        String[] temp;
+
+        for(int i=0; i < loadText.length;i++){
+            //Si notre ligne est null on ne fait rien
+            if(loadText[i] != null){
+                //On split notre chaine de caractère grâce aux ; qu'on a mis à la sauvegarde
+                temp = loadText[i].split(";");
+
+                //On récupère nos variables
+                tempName = temp[0];
+                //tempCategory = temp[1];
+                tempQuantity = Integer.parseInt(temp[1]);
+                tempForm = temp[2];
+
+                //On ajoute notre produit à l'arrayList
+                liste.add(new Product(tempName,null,tempQuantity,null,null,tempForm));
+            }
+
+        }
+>>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
     }
     private View.OnClickListener spinnerSort = new View.OnClickListener(){
 

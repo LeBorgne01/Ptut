@@ -54,4 +54,16 @@
        app:layout_constraintTop_toBottomOf="@+id/button_voir_detail"
        tools:layout_editor_absoluteY="172dp" />
 
+   <Button
+       android:id="@+id/add_revenu"
+       android:layout_width="278dp"
+       android:layout_height="61dp"
+       android:text="AJOUTER UN REVENU"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintEnd_toStartOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/add_depense"
+       tools:layout_editor_absoluteX="147dp"
+       tools:layout_editor_absoluteY="219dp" />
+
 </android.support.constraint.ConstraintLayout>
