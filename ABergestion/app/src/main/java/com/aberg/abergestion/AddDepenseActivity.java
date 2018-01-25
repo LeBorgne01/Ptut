@@ -2,7 +2,10 @@ package com.aberg.abergestion;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +15,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -27,6 +37,8 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
      private Switch switch_periodicite;
      private Button button_valider;
      private ArrayList<donneesBudget> listDR;
+
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ABergestion";
 
     private void initDataJour(){
         dataJour = new ArrayList<>();
@@ -53,9 +65,20 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
     protected void onCreate(Bundle savedInstanceState) {
         //TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        listDR = new ArrayList<>();
+        File dir = new File(path);
+        dir.mkdir();
+
+        File file = new File(path +"listDR.txt");
+
+        if(file.exists()){
+            loadListDR(listDR);
+            System.out.println("ok");
+        }
+        else System.out.println("combeubeu");
+
         setContentView(R.layout.activity_add_depense);
-        Intent intent = getIntent();
-        listDR = (ArrayList<donneesBudget>)intent.getSerializableExtra("listDR");
+
         /*if(listDR != null){
             System.out.println(listDR.size());
         }
@@ -132,12 +155,154 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
         }
     };
 
-    /*@Override
-    protected void onStop() {
-        super.onStop();
-        Intent intent = new Intent(this,BudgetActivity.class);
-        intent.putExtra("listDR",listDR);
-        startActivity(intent);
-    }*/
+    public Date toDate(String s){
+        String[] tabS = s.split("/");
+        Date d = new Date(Integer.parseInt(tabS[0]),Integer.parseInt(tabS[1]),Integer.parseInt(tabS[2]));
+        return d;
+    }
 
+    private void saveListDR(User u) throws IOException {
+
+        SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = user.edit();
+        editor.putString("NAME", u.getName());
+        editor.putString("FIRSTNAME", u.getFirstName());
+        editor.putString("PASSWORD", u.getPassword());
+        editor.commit();
+    }
+
+    private boolean loadListDR() {
+        SharedPreferences listDR = PreferenceManager.getDefaultSharedPreferences(this);
+        String nom = listDR.getString("NAME","n/a");
+
+        if(nom == "n/a"){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+/*
+    private void saveListDR(ArrayList<donneesBudget> listDR){
+        File file = new File(path + "/listDR.txt");
+
+        int tailleArray = listDR.size();
+        String [] savedText = new String[tailleArray];
+        String temp;
+
+        for(int i=0; i < tailleArray; i++){
+            temp = listDR.get(i).getIntitule()+";"+listDR.get(i).getDate()+";"+listDR.get(i).getMontant()+";"+listDR.get(i).isPeriodicite();
+            savedText[i] = temp;
+        }
+
+        save(file, savedText);
+    }
+
+    private void save(File file, String[] listDR){
+        FileOutputStream fos = null;
+
+        try{
+            fos = openFileOutput("listDR.txt",MODE_PRIVATE);
+        }
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        try{
+            try{
+                System.out.println("dir : ");
+                for(int i = 0; i < listDR.length; i++){
+                    fos.write(listDR[i].getBytes());
+                    if(i < listDR.length){
+                        fos.write("\n".getBytes());
+                    }
+                }
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        finally {
+            try{
+                fos.close();
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void loadListDR(ArrayList<donneesBudget> listDR){
+        File file = new File(path + "/listDR.txt");
+
+        String[] loadText = load(file);
+
+        String tempIntitule;
+        Date tempDate = new Date(0,0,0);
+        double tempMontant;
+        boolean tempPeriodicite;
+        String[] temp;
+
+        for(int i=0; i < loadText.length;i++){
+            temp = loadText[i].split(";");
+            tempIntitule = temp[0];
+            tempDate = toDate(temp[1]);
+            tempMontant = Double.parseDouble(temp[2]);
+            tempPeriodicite = Boolean.parseBoolean(temp[3]);
+
+            listDR.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite));
+        }
+    }
+
+    private String[] load(File file){
+        FileInputStream fis = null;
+
+        try{
+            fis = openFileInput(file.getName());
+        }
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader br = new BufferedReader(isr);
+
+        String test;
+        int azah = 0;
+
+        try{
+            while((test = br.readLine()) != null){
+                azah++;
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        try{
+            fis.getChannel().position(0);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        String[] array = new String[azah];
+        String line;
+        int i = 0;
+
+        try{
+            while((line = br.readLine()) != null){
+                array[i] = line;
+                i++;
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return array;
+
+    }
+    */
 }

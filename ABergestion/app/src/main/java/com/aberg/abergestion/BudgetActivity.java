@@ -55,10 +55,10 @@ public class BudgetActivity extends AppCompatActivity implements View.OnTouchLis
         }
         if(view.getId() == R.id.add_depense){
             Intent intent= new Intent(BudgetActivity.this,AddDepenseActivity.class);
-            if(listDR != null){
+            /*if(listDR != null){
                 System.out.println(listDR.size());
-            }
-            else System.out.println("ok");
+            }*/
+            //else System.out.println("ok");
             intent.putExtra("listDR",listDR);
             startActivity(intent);
         }
