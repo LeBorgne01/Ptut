@@ -1,10 +1,12 @@
 package com.aberg.abergestion;
 
+import java.io.Serializable;
+
 /**
  * Created by louis on 22/01/2018.
  */
 
-public class Date {
+public class Date implements Serializable{
     private int jour,mois,annee;
 
     public Date(int j,int m,int a){
@@ -23,5 +25,10 @@ public class Date {
 
     public int getAnnee(){
         return annee;
+    }
+
+    public String displayDate(){
+        String s = Integer.toString(jour)+'/'+Integer.toString(mois)+'/'+Integer.toString(annee);
+        return s;
     }
 }

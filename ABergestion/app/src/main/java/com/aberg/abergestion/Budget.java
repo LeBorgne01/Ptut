@@ -7,21 +7,24 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Mael on 18/12/2017.
  */
 
-public class Budget {
+public class Budget implements Serializable {
     private ArrayList<donneesBudget> datas;
     private ArrayList<String> intituleData;
 
     public Budget(ArrayList<donneesBudget> datas){
         this.datas = datas;
         this.intituleData = new ArrayList<String>();
-        for(int i = 0; i < datas.size(); i++ ){
-            intituleData.add(datas.get(i).getIntitule());
+        if(datas != null) {
+            for (int i = 0; i < datas.size(); i++) {
+                intituleData.add(datas.get(i).getIntitule());
+            }
         }
     }
 
