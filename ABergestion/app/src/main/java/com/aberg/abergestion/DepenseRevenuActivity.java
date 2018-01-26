@@ -17,10 +17,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -114,10 +116,17 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
 
     }
 
-    private void popupAddProduct(){
+    private ListView.OnItemClickListener ClicRow = new ListView.OnItemClickListener(){
+        @Override
+        public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+            popupAfficherDR(pos);
+        }
+    };
+
+    private void popupAfficherDR(){
         //On instancie notre layout en tant que View
         LayoutInflater factory = LayoutInflater.from(DepenseRevenuActivity.this);
-        final View alertDialogView = factory.inflate(R.layout.alertdialog_add_product, null);
+        final View alertDialogView = factory.inflate(R.layout.alertdialog_afficher_detail_dr, null);
 
         //Création de l'AlertDialog
         AlertDialog.Builder popup = new AlertDialog.Builder(this);
@@ -128,41 +137,18 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         //On donne un titre à l'AlertDialog
         popup.setTitle(R.string.alertDialog_addProduct);
 
-        //On modifie l'icône de l'AlertDialog pour le fun ;)
-        //popup.setIcon(android.R.drawable.ic_dialog_alert);
+        /*TextView textView_intitule = (TextView)findViewById(R.id.textView_intitule);
+        TextView textView_montant = (TextView)findViewById(R.id.textView_montant);
+        TextView textView_date = (TextView)findViewById(R.id.textView_date);
+        TextView textView_categorie = (TextView)findViewById(R.id.textView_categorie);
+        TextView textView_periodicite = (TextView)findViewById(R.id.textView_periodicite);*/
 
-        //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
-        popup.setPositiveButton(R.string.text_add, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        TextView textView_contenu_intitule = (TextView)findViewById(R.id.textView_contenu_intitule);
+        TextView textView_contenu_montant = (TextView)findViewById(R.id.textView_contenu_montant);
+        TextView textView_contenu_date = (TextView)findViewById(R.id.textView_contenu_date);
+        TextView textView_contenu_categorie = (TextView)findViewById(R.id.textView_contenu_categorie);
+        TextView textView_contenu_periodicite = (TextView)findViewById(R.id.textView_contenu_periodicite);
 
-                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
-                EditText productName = alertDialogView.findViewById(R.id.editText_popupProductName);
-                EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupQuantity);
-                EditText productType = alertDialogView.findViewById(R.id.editText_popupProductType);
-
-
-
-                String name = productName.getText().toString();
-                String quantity = productQuantity.getText().toString();
-                String type = productType.getText().toString();
-
-                if(isEmpty(name) || isEmpty(quantity) || isEmpty(type)){
-                    alertDialog(getString(R.string.AlertDialog_champsrempli));
-                }
-                else{
-                    int temp = Integer.parseInt(quantity);
-                    al_groceryList.add(new Product(name,null,temp,null,null,type));
-                    saveGroceryList(al_groceryList);
-                    showListView();
-
-                    //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
-                    Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
-
-                }
-
-
-
-            } });
 
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
         popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
