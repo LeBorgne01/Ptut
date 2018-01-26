@@ -13,6 +13,7 @@ public  class Product {
     private String purchaseDate;
     private String expirationDate;
     private String form;
+    private int numbrePrevent;
 
 
     public Product(String name, String category, int quantity, String purchaseDate, String expirationDate, String form) {
@@ -22,6 +23,7 @@ public  class Product {
         this.purchaseDate = purchaseDate;
         this.expirationDate = expirationDate;
         this.form = form;
+        this.numbrePrevent = 0;
     }
 
     public String getName() {

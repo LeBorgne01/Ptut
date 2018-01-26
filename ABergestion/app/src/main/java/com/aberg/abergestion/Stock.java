@@ -31,7 +31,9 @@ public class Stock {
 
     }
 
-
+    public void addProduct(Product product){
+        this.stock.add(product);
+    }
 
 
 }

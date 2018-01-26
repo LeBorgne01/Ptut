@@ -36,19 +36,11 @@ public class GroceryListActivity extends AppCompatActivity {
     private ListView stockListView;
     private String[] dataTri = {"Trier par :","Noms","Catégories","Quantités"};
 
-    private String[] dataCategory = {getString(R.string.string_category),getString(R.string.string_alimentary),"Hygiène","Animalier","Autres"};
+    private String[] dataCategory = {"Catégories : ","Alimentaire","Hygiène","Animalier","Autres"};
     private ArrayList <Product> al_groceryList;
-    private Product p;
-    private Product p2;
-    private Product p3;
     private Button add;
     private Spinner spnSort;
     private ArrayAdapter<String> adapt;
-
-    private String tri;
-
-    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ABergestion";
-
 
 
     @Override
@@ -527,7 +519,6 @@ public class GroceryListActivity extends AppCompatActivity {
         }
 
     };
-
 
 }
 
