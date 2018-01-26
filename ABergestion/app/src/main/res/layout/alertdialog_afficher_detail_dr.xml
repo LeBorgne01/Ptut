@@ -11,31 +11,40 @@
         android:layout_width="94dp"
         android:layout_height="18dp"
         android:layout_marginStart="76dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="10dp"
         android:text="Initulé :"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_montant"
+        android:id="@+id/textView_contenu_intitule"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginEnd="104dp"
-        android:layout_marginTop="96dp"
-        android:text="oui"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="76dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_intitule"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_date"
+        android:id="@+id/textView_montant"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="16dp"
+        android:text="Montant :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_intitule" />
+
+    <TextView
+        android:id="@+id/textView_Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
         android:layout_marginTop="20dp"
-        android:text="Montant :"
+        android:text="Date :"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_intitule" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_montant" />
 
     <TextView
         android:id="@+id/textView_categorie"
@@ -43,9 +52,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
         android:layout_marginTop="20dp"
-        android:text="Date :"
+        android:text="Catégorie :"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_Date" />"
+        tools:layout_editor_absoluteX="69dp" />
 
     <TextView
         android:id="@+id/textView_periodicite"
@@ -53,35 +63,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
         android:layout_marginTop="20dp"
-        android:text="Catégorie :"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_categorie" />
-
-    <TextView
-        android:id="@+id/textView_contenu_intitule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="20dp"
         android:text="Periodicité :"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_periodicite" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_categorie" />
 
     <TextView
         android:id="@+id/textView_contenu_montant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="104dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_montant" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_contenu_intitule" />
 
     <TextView
         android:id="@+id/textView_contenu_date"
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_marginEnd="104dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="76dp"
         android:layout_marginTop="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
         android:id="@+id/textView_contenu_categorie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="104dp"
+        android:layout_marginEnd="76dp"
         android:layout_marginTop="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
         android:id="@+id/textView_contenu_periodicite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="104dp"
+        android:layout_marginEnd="76dp"
         android:layout_marginTop="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"

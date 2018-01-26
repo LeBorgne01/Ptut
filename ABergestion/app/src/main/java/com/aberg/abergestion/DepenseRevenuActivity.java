@@ -53,6 +53,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(DepenseRevenuActivity.this, android.R.layout.simple_list_item_1, montantDatas);
         mListView.setCacheColorHint(13);
         mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(ClicRow);
     }
 
     public Date toDate(String s){
@@ -123,7 +124,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         }
     };
 
-    private void popupAfficherDR(){
+    private void popupAfficherDR(int pos){
         //On instancie notre layout en tant que View
         LayoutInflater factory = LayoutInflater.from(DepenseRevenuActivity.this);
         final View alertDialogView = factory.inflate(R.layout.alertdialog_afficher_detail_dr, null);
@@ -135,19 +136,27 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         popup.setView(alertDialogView);
 
         //On donne un titre à l'AlertDialog
-        popup.setTitle(R.string.alertDialog_addProduct);
+        popup.setTitle(R.string.alertDialog_afficher_detail_dr);
 
-        /*TextView textView_intitule = (TextView)findViewById(R.id.textView_intitule);
-        TextView textView_montant = (TextView)findViewById(R.id.textView_montant);
-        TextView textView_date = (TextView)findViewById(R.id.textView_date);
-        TextView textView_categorie = (TextView)findViewById(R.id.textView_categorie);
-        TextView textView_periodicite = (TextView)findViewById(R.id.textView_periodicite);*/
+        TextView textView_intitule = (TextView)alertDialogView.findViewById(R.id.textView_intitule);
+        TextView textView_montant = (TextView)alertDialogView.findViewById(R.id.textView_montant);
+        TextView textView_date = (TextView)alertDialogView.findViewById(R.id.textView_Date);
+        TextView textView_categorie = (TextView)alertDialogView.findViewById(R.id.textView_categorie);
+        TextView textView_periodicite = (TextView)alertDialogView.findViewById(R.id.textView_periodicite);
 
-        TextView textView_contenu_intitule = (TextView)findViewById(R.id.textView_contenu_intitule);
-        TextView textView_contenu_montant = (TextView)findViewById(R.id.textView_contenu_montant);
-        TextView textView_contenu_date = (TextView)findViewById(R.id.textView_contenu_date);
-        TextView textView_contenu_categorie = (TextView)findViewById(R.id.textView_contenu_categorie);
-        TextView textView_contenu_periodicite = (TextView)findViewById(R.id.textView_contenu_periodicite);
+        TextView textView_contenu_intitule = (TextView)alertDialogView.findViewById(R.id.textView_contenu_intitule);
+        textView_contenu_intitule.setText(listDR.get(pos).getIntitule());
+        TextView textView_contenu_montant = (TextView)alertDialogView.findViewById(R.id.textView_contenu_montant);
+        textView_contenu_montant.setText(String.valueOf(listDR.get(pos).getMontant()));
+        TextView textView_contenu_date = (TextView)alertDialogView.findViewById(R.id.textView_contenu_date);
+        textView_contenu_date.setText(listDR.get(pos).getDate().dateToString());
+        TextView textView_contenu_categorie = (TextView)alertDialogView.findViewById(R.id.textView_contenu_categorie);
+        textView_contenu_categorie.setText(listDR.get(pos).getCategorie());
+        TextView textView_contenu_periodicite = (TextView)alertDialogView.findViewById(R.id.textView_contenu_periodicite);
+        if(listDR.get(pos).isPeriodicite()) {
+            textView_contenu_periodicite.setText("Oui");
+        }
+        else textView_contenu_periodicite.setText("Non");
 
 
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement

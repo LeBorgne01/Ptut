@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -187,6 +188,19 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
 
         //On met à jour le fichier
         editor.commit();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                Intent intent = new Intent(AddRevenuActivity.this,BudgetActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return false;
+
     }
 
     private void loadListDR(ArrayList<donneesBudget> liste){

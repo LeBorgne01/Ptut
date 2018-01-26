@@ -51,9 +51,6 @@
 
     <string name="spinner_sort_prompt">Trier</string>
 
-
-
-
     <string name="alertDialog_wrongPW">Mauvais mot de passe !</string>
     <string name="editText_productName">Nom du produit</string>
     <string name="editText_quantity">Quantité</string>
@@ -61,6 +58,6 @@
     <string name="alertDialog_addProduct">Ajouter un produit :</string>
     <string name="text_add">Ajouter</string>
     <string name="toast_productAdded">Produit ajouté</string>
-
+    <string name="alertDialog_afficher_detail_dr">Détails :</string>
 
 </resources>
