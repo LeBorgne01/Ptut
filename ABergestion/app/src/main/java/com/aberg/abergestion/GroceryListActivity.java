@@ -1,6 +1,6 @@
 package com.aberg.abergestion;
 
-import android.content.ClipData;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,30 +12,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.SoundEffectConstants;
 import android.view.View;
-
 import android.widget.AdapterView;
-
 import android.widget.ArrayAdapter;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
 
 /**
  * Created by Mickael on 23/01/2018.
@@ -49,7 +36,7 @@ public class GroceryListActivity extends AppCompatActivity {
     private ListView stockListView;
     private String[] dataTri = {"Trier par :","Noms","Catégories","Quantités"};
 
-    private String[] dataCategory = {"Catégorie : ","Alimentaire","Hygiène","Animalier","Autres"};
+    private String[] dataCategory = {getString(R.string.string_category),getString(R.string.string_alimentary),"Hygiène","Animalier","Autres"};
     private ArrayList <Product> al_groceryList;
     private Product p;
     private Product p2;
@@ -203,8 +190,8 @@ public class GroceryListActivity extends AppCompatActivity {
                 if (isEmpty(name) || isEmpty(quantity) || isEmpty(type)) {
                     alertDialog(getString(R.string.AlertDialog_champsrempli));
                 } else {
-                    if(category.equals("Catégorie : ")){
-                        alertDialog("La catégorie doit être choisie !");
+                    if(category.equals(getString(R.string.string_category))){
+                        alertDialog(getString(R.string.alertDialog_chooseCategory));
                     }
                     else {
                         int temp = Integer.parseInt(quantity);
@@ -224,7 +211,7 @@ public class GroceryListActivity extends AppCompatActivity {
         });
 
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
-        popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+        popup.setNegativeButton(R.string.string_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //On ferme la popup
             }
@@ -314,7 +301,7 @@ public class GroceryListActivity extends AppCompatActivity {
                 }
                 else{
                     if(prodCategory.equals("Catégorie : ")){
-                        alertDialog("La catégorie doit être choisie !");
+                        alertDialog(getString(R.string.alertDialog_chooseCategory));
                     }
                     else {
 

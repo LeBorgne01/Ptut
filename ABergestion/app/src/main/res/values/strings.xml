@@ -59,5 +59,9 @@
     <string name="text_add">Ajouter</string>
     <string name="toast_productAdded">Produit ajouté</string>
     <string name="alertDialog_afficher_detail_dr">Détails :</string>
+    <string name="alertDialog_chooseCategory">La catégorie doit être choisie !</string>
+    <string name="string_category">Catégorie :</string>
+    <string name="string_cancel">Annuler</string>
+    <string name="string_alimentary">Alimentaire</string>
 
 </resources>
