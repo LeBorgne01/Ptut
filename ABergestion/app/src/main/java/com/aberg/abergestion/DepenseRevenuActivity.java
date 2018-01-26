@@ -119,7 +119,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
     private ListView.OnItemClickListener ClicRow = new ListView.OnItemClickListener(){
         @Override
         public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-            popupAfficherDR(pos);
+            popupAfficherDR();
         }
     };
 

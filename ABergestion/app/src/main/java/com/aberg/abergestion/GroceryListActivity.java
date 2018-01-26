@@ -48,6 +48,8 @@ public class GroceryListActivity extends AppCompatActivity {
     private Button back;
     private ListView stockListView;
     private String[] dataTri = {"Trier par :","Noms","Catégories","Quantités"};
+
+    private String[] dataCategory = {"Catégorie : ","Alimentaire","Hygiène","Animalier","Autres"};
     private ArrayList <Product> al_groceryList;
     private Product p;
     private Product p2;
@@ -173,6 +175,11 @@ public class GroceryListActivity extends AppCompatActivity {
         //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
         popup.setView(alertDialogView);
 
+        //On charge le spinner
+        final Spinner productCategory = alertDialogView.findViewById(R.id.spinner_popupProductCategory);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataCategory);
+        productCategory.setAdapter(categoryAdapter);
+
         //On donne un titre à l'AlertDialog
         popup.setTitle(R.string.alertDialog_addProduct);
 
@@ -188,7 +195,7 @@ public class GroceryListActivity extends AppCompatActivity {
                 EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupQuantity);
                 EditText productType = alertDialogView.findViewById(R.id.editText_popupProductType);
 
-
+                String category = productCategory.getSelectedItem().toString();
                 String name = productName.getText().toString();
                 String quantity = productQuantity.getText().toString();
                 String type = productType.getText().toString();
@@ -196,19 +203,21 @@ public class GroceryListActivity extends AppCompatActivity {
                 if (isEmpty(name) || isEmpty(quantity) || isEmpty(type)) {
                     alertDialog(getString(R.string.AlertDialog_champsrempli));
                 } else {
-                    int temp = Integer.parseInt(quantity);
+                    if(category.equals("Catégorie : ")){
+                        alertDialog("La catégorie doit être choisie !");
+                    }
+                    else {
+                        int temp = Integer.parseInt(quantity);
 
 
+                        al_groceryList.add(new Product(name, category, temp, null, null, type));
+                        saveGroceryList(al_groceryList);
 
-                    al_groceryList.add(new Product(name,null,temp,null,null,type));
-                    saveGroceryList(al_groceryList);
+                        showListView();
 
-                    showListView();
-
-
-                    //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
-                    Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
-
+                        //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                        Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -234,6 +243,10 @@ public class GroceryListActivity extends AppCompatActivity {
         //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
         popup.setView(alertDialogView);
 
+        //On charge le spinner
+        final Spinner productCategory = alertDialogView.findViewById(R.id.spinner_popupDelProductCategory);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataCategory);
+        productCategory.setAdapter(categoryAdapter);
 
 
         //On récupère les EditText de notre popup
@@ -246,11 +259,31 @@ public class GroceryListActivity extends AppCompatActivity {
         productQuantity.setText(Integer.toString(al_groceryList.get(position).getQuantity()));
         productType.setText(al_groceryList.get(position).getForm());
 
+        int selection;
+        switch(al_groceryList.get(position).getCategory()){
+            case "Alimentaire" :
+                selection = 1;
+                break;
+            case "Hygiène" :
+                selection = 2;
+                break;
+            case "Animalier" :
+                selection = 3;
+                break;
+            case "Autres" :
+                selection = 4;
+                break;
+            default :
+                selection = 4;
+                break;
+        }
+        productCategory.setSelection(selection);
+
         //On donne un titre à l'AlertDialog
         popup.setTitle("Modifier/Supprimer produit");
 
 
-        //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
+        //On affecte un bouton "Supprimer" à notre AlertDialog et on lui affecte un évènement
         popup.setNegativeButton("Supprimer", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 al_groceryList.remove(position);
@@ -266,28 +299,39 @@ public class GroceryListActivity extends AppCompatActivity {
                 //On ferme la popup
             } });
 
-        //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
+        //On crée un bouton "Modifier" à notre AlertDialog et on lui affecte un évènement
         popup.setNeutralButton("Modifier", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 String prodName = productName.getText().toString();
                 String prodQuantity = productQuantity.getText().toString();
                 String prodType = productType.getText().toString();
+                String prodCategory = productCategory.getSelectedItem().toString();
+
+
 
                 if(isEmpty(prodName) || isEmpty(prodQuantity) || isEmpty(prodType)){
                     alertDialog(getString(R.string.AlertDialog_champsrempli));
                 }
                 else{
-                    int temp = Integer.parseInt(prodQuantity);
+                    if(prodCategory.equals("Catégorie : ")){
+                        alertDialog("La catégorie doit être choisie !");
+                    }
+                    else {
 
-                    al_groceryList.get(position).setName(prodName);
-                    al_groceryList.get(position).setQuantity(temp);
-                    al_groceryList.get(position).setForm(prodType);
 
-                    saveGroceryList(al_groceryList);
+                        int temp = Integer.parseInt(prodQuantity);
 
-                    showListView();
+                        al_groceryList.get(position).setName(prodName);
+                        al_groceryList.get(position).setQuantity(temp);
+                        al_groceryList.get(position).setForm(prodType);
+                        al_groceryList.get(position).setCategory(prodCategory);
 
-                    Toast.makeText(GroceryListActivity.this, "Produit modifié", Toast.LENGTH_SHORT).show();
+                        saveGroceryList(al_groceryList);
+
+                        showListView();
+
+                        Toast.makeText(GroceryListActivity.this, "Produit modifié", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             } });
@@ -384,10 +428,6 @@ public class GroceryListActivity extends AppCompatActivity {
         return true;
     }
 
-
-
-    //private void initDataSort(){
-
     private void saveGroceryList(ArrayList<Product> liste){
         //On récupère la taille de la liste puis on crée un tableau de string aussi grand
         int tailleArray = liste.size();
@@ -399,7 +439,7 @@ public class GroceryListActivity extends AppCompatActivity {
         //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
             //Ici on écrit un élément et on sépare deux éléments avec des points virgule
-            temp = liste.get(i).getName()+";"/*+liste.get(i).getCategory()+";"*/+liste.get(i).getQuantity()+";"+liste.get(i).getForm();
+            temp = liste.get(i).getName()+";"+liste.get(i).getCategory()+";"+liste.get(i).getQuantity()+";"+liste.get(i).getForm();
 
             //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;
@@ -409,11 +449,6 @@ public class GroceryListActivity extends AppCompatActivity {
         //On ouvre l'écriture dans notre fichier utilisateur
         SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = user.edit();
-
-
-//            dataTri.add("Trier par: Noms");
-//            dataTri.add("Trier par:Categories");
-//            dataTri.add("Trier par:Quantités");
 
         //On indique la taille de notre liste de course
         editor.putInt("ELEMENTS_LISTE_COURSE", liste.size());
@@ -460,12 +495,12 @@ public class GroceryListActivity extends AppCompatActivity {
 
                 //On récupère nos variables
                 tempName = temp[0];
-                //tempCategory = temp[1];
-                tempQuantity = Integer.parseInt(temp[1]);
-                tempForm = temp[2];
+                tempCategory = temp[1];
+                tempQuantity = Integer.parseInt(temp[2]);
+                tempForm = temp[3];
 
                 //On ajoute notre produit à l'arrayList
-                liste.add(new Product(tempName,null,tempQuantity,null,null,tempForm));
+                liste.add(new Product(tempName,tempCategory,tempQuantity,null,null,tempForm));
             }
 
         }
@@ -486,7 +521,7 @@ public class GroceryListActivity extends AppCompatActivity {
                    nameSort(al_groceryList);
                    break;
                case "Catégories":
-                   //categorySort(al_groceryList);
+                   categorySort(al_groceryList);
                    break;
                case "Quantités":
                    quantitySort(al_groceryList);
