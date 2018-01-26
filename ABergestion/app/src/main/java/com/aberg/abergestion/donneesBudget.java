@@ -11,12 +11,14 @@ public class donneesBudget implements Serializable{
     private Date date;
     private double montant;
     private boolean periodicite;
+    private String categorie;
 
-    public donneesBudget(String inti,Date d, double montant,boolean periodicite){
+    public donneesBudget(String inti,Date d, double montant,boolean periodicite,String categorie){
         this.date = d;
         this.intitule= inti;
         this.montant = montant;
         this.periodicite = periodicite;
+        this.categorie = categorie;
     }
 
     public String getIntitule(){
@@ -35,7 +37,7 @@ public class donneesBudget implements Serializable{
         return periodicite;
     }
 
-    public void displayDonneesBudget(){
-        System.out.println("Intitule : " + intitule+"\nDate : "+date.dateToString()+"\nMontant :"+montant+"\nPeriodicite :"+periodicite);
+    public String getCategorie(){
+        return categorie;
     }
 }

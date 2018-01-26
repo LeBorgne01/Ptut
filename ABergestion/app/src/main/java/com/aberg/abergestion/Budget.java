@@ -16,14 +16,16 @@ import java.util.ArrayList;
 
 public class Budget implements Serializable {
     private ArrayList<donneesBudget> datas;
-    private ArrayList<String> intituleData;
+    private ArrayList<String> montantData;
 
     public Budget(ArrayList<donneesBudget> datas){
         this.datas = datas;
-        this.intituleData = new ArrayList<String>();
+        this.montantData = new ArrayList<String>();
         if(datas != null) {
             for (int i = 0; i < datas.size(); i++) {
-                intituleData.add(datas.get(i).getIntitule());
+                if(datas.get(i).getMontant() < 0)
+                    montantData.add(String.valueOf(datas.get(i).getMontant()));
+                else montantData.add("+ "+String.valueOf(datas.get(i).getMontant()));
             }
         }
     }
@@ -32,7 +34,7 @@ public class Budget implements Serializable {
         return datas;
     }
 
-    public ArrayList<String> getIntituleData(){
-        return intituleData;
+    public ArrayList<String> getMontantData(){
+        return montantData;
     }
 }

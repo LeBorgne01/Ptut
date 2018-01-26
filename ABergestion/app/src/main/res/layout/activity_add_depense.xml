@@ -65,12 +65,11 @@
 
     <Switch
         android:id="@+id/switch_periodicite"
-        android:layout_width="213dp"
+        android:layout_width="138dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="32dp"
         android:text="Periodicité"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_annee" />
 
@@ -115,5 +114,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch_periodicite" />
+
+    <Spinner
+        android:id="@+id/spinner_categorie"
+        android:layout_width="138dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintStart_toEndOf="@+id/switch_periodicite"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_annee" />
 
 </android.support.constraint.ConstraintLayout>

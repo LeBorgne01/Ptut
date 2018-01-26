@@ -30,13 +30,14 @@ import java.util.ArrayList;
  */
 
 public class AddDepenseActivity extends AppCompatActivity implements Serializable {
-     private Spinner spJ,spM,spA;
+     private Spinner spJ,spM,spA,spCat;
      private EditText eTIntitule,eTMontant;
-     private ArrayAdapter<String> adapt1,adapt2,adapt3;
+     private ArrayAdapter<String> adapt1,adapt2,adapt3,adaptCat;
      private ArrayList<String> dataJour,dataAnnee,dataMois;
      private Switch switch_periodicite;
      private Button button_valider;
      private ArrayList<donneesBudget> listDR;
+     private String[] listCat= {"Jeu","Nourriture&Hygiène","Restaurant","Sortie","Shopping"};
 
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ABergestion";
 
@@ -82,14 +83,17 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
         spJ = (Spinner)findViewById(R.id.spinner_jour);
         spM = (Spinner)findViewById(R.id.spinner_mois);
         spA = (Spinner)findViewById(R.id.spinner_annee);
+        spCat = (Spinner)findViewById(R.id.spinner_categorie);
         eTIntitule=(EditText)findViewById(R.id.editText_intitule);
         eTMontant=(EditText)findViewById(R.id.editText_montant);
         adapt1 = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataJour);
         adapt2= new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataAnnee);
         adapt3 = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataMois);
+        adaptCat = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, listCat);
         spJ.setAdapter(adapt1);
         spM.setAdapter(adapt3);
         spA.setAdapter(adapt2);
+        spCat.setAdapter(adaptCat);
     }
 
     private View.OnClickListener BtnValider = new View.OnClickListener(){
@@ -133,8 +137,9 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
                 int contenuMois = Integer.parseInt(spM.getSelectedItem().toString());
                 int contenuAnnee = Integer.parseInt(spA.getSelectedItem().toString());
                 boolean contenuSwitchPerio = switch_periodicite.isChecked();
+                String contenuCategorie = spCat.getSelectedItem().toString();
                 Date d = new Date(contenuJour,contenuMois,contenuAnnee);
-                donneesBudget data= new donneesBudget(contenuIntitule,d,contenuMontant,contenuSwitchPerio);
+                donneesBudget data= new donneesBudget(contenuIntitule,d,contenuMontant,contenuSwitchPerio,contenuCategorie);
                 //data.displayDonneesBudget();
                 listDR.add(data);
                 saveListDR(listDR);
@@ -164,7 +169,7 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
         //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
             //Ici on écrit un élément et on sépare deux éléments avec des points virgule
-            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite();
+            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getCategorie();
 
             //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;
@@ -203,6 +208,7 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
         Date tempDate;
         double tempMontant;
         boolean tempPeriodicite;
+        String tempCategorie;
 
         //Ce tableau permet de récupérer le splitage de la chaine du tableau loadText
         String[] temp;
@@ -220,9 +226,10 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
                 System.out.println(temp[1]);
                 tempMontant = Double.parseDouble(temp[2]);
                 tempPeriodicite = Boolean.parseBoolean(temp[3]);
+                tempCategorie = temp[4];
 
                 //On ajoute notre produit à l'arrayList
-                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite));
+                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite,tempCategorie));
             }
 
         }
