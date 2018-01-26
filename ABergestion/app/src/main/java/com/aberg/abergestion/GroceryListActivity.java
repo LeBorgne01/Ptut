@@ -9,8 +9,10 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -98,8 +100,12 @@ public class GroceryListActivity extends AppCompatActivity {
         // On met le context (this ici), ensuite la définition des lignes de la liste, ensuite on ajoute les lignes, on définit les colonnes, on les lient aux textView, on met le flag à 0
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,R.layout.row_item,matrixCursor,from,to,0);
 
+
+
         // On lie la liste avec l'adapter
         stockListView.setAdapter(adapter);
+
+        stockListView.setOnItemClickListener(ClicRow);
     }
 
     private View.OnClickListener BtnBack = new View.OnClickListener(){
@@ -120,6 +126,13 @@ public class GroceryListActivity extends AppCompatActivity {
 
     };
 
+    private ListView.OnItemClickListener ClicRow = new ListView.OnItemClickListener(){
+        @Override
+        public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+            popupDeleteProduct(pos);
+        }
+    };
+
     private void popupAddProduct(){
         //On instancie notre layout en tant que View
         LayoutInflater factory = LayoutInflater.from(GroceryListActivity.this);
@@ -137,7 +150,7 @@ public class GroceryListActivity extends AppCompatActivity {
         //On modifie l'icône de l'AlertDialog pour le fun ;)
         //popup.setIcon(android.R.drawable.ic_dialog_alert);
 
-        //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
+        //On affecte un bouton "Ajouter" à notre AlertDialog et on lui affecte un évènement
         popup.setPositiveButton(R.string.text_add, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
@@ -161,6 +174,7 @@ public class GroceryListActivity extends AppCompatActivity {
                     saveGroceryList(al_groceryList);
                     showListView();
 
+
                     //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
                     Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
 
@@ -174,6 +188,51 @@ public class GroceryListActivity extends AppCompatActivity {
         popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                //On ferme la popup
+            } });
+        popup.show();
+    }
+
+    private void popupDeleteProduct(int position){
+        //On instancie notre layout en tant que View
+        LayoutInflater factory = LayoutInflater.from(GroceryListActivity.this);
+        final View alertDialogView = factory.inflate(R.layout.alertdialog_delete_product, null);
+
+        //On récupère les EditText de notre popup
+        EditText productName = alertDialogView.findViewById(R.id.editText_popupDelProductName);
+        EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupDelQuantity);
+        EditText productType = alertDialogView.findViewById(R.id.editText_popupDelProductType);
+
+        //On met un text dans ces EditTexts
+        //al_groceryList.get(position).getName()
+        productName.setText("Hello");
+        //productQuantity.setText(Integer.toString(al_groceryList.get(position).getQuantity()));
+        //productType.setText(al_groceryList.get(position).getForm());
+
+        //Création de l'AlertDialog
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+
+        //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
+        popup.setView(alertDialogView);
+
+        //On donne un titre à l'AlertDialog
+        popup.setTitle("Modifier/Supprimer produit");
+
+        //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
+        popup.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //On ferme la popup
+            } });
+
+        //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
+        popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //On ferme la popup
+            } });
+
+        //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
+        popup.setNeutralButton("Modifier", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //On ferme la popup
             } });
         popup.show();
     }
@@ -304,6 +363,7 @@ public class GroceryListActivity extends AppCompatActivity {
     private void loadGroceryList(ArrayList<Product> liste){
         //On ouvre le fichier de preference
         SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = user.edit();
 
         //On prend le nombre d'éléments de la liste de courses (par défaut 0)
         String[] loadText = new String[user.getInt("ELEMENTS_LISTE_COURSE",0)];
@@ -311,6 +371,9 @@ public class GroceryListActivity extends AppCompatActivity {
         //On rempli notre tableau de string avec les éléments des préférences de notre utilisateur
         for(int i=0; i < loadText.length;i++){
             loadText[i] = user.getString("LISTE_COURSE_"+i,null);
+
+            //On supprime la ligne pour ne pas avoir de problème plus tard
+            editor.remove("LISTE_COURSE_"+i);
         }
 
         //On déclare nos variables pour créer nos elements de liste de course
