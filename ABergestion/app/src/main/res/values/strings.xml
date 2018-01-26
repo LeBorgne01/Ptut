@@ -50,12 +50,7 @@
     <string name="button_add">+</string>
 
     <string name="spinner_sort_prompt">Trier</string>
-    <string-array name="sort_array">
-        <item>Trier par: Noms</item>
-        <item>Trier par:Categories</item>
-        <item>Trier par:Quantités</item>
 
-    </string-array>
 
 
 
