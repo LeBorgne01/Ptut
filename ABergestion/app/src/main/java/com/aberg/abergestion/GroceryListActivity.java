@@ -46,18 +46,14 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private Button back;
     private ListView stockListView;
-
     private ArrayList<String> dataTri=new ArrayList<>();
-
     private ArrayList <Product> al_groceryList;
-
     private Product p;
     private Product p2;
     private Product p3;
     private Button add;
     private Spinner spnSort;
     private ArrayAdapter<String> adapt;
-
 
     private String tri;
 
@@ -69,18 +65,6 @@ public class GroceryListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
-
-        p = new Product("ravioli", "alimentaire", 2, null, null, "conserve");
-        p2 = new Product("chips", "alimentaire", 4, null, null, "sachet");
-        p3 = new Product("lessive", "menager", 1, null, null, "bidon");
-
-        //al_groceryList = new ArrayList<>();
-        al_groceryList.add(p);
-        al_groceryList.add(p2);
-        al_groceryList.add(p3);
-
-        quantitySort(al_groceryList);
-
 
         //On charge notre liste de course
         al_groceryList = new ArrayList<>();
@@ -94,6 +78,7 @@ public class GroceryListActivity extends AppCompatActivity {
 
         add.setOnClickListener(BtnAdd);
         back.setOnClickListener(BtnBack);
+        stockListView.setOnItemClickListener(ClicRow);
         //spnSort.setOnItemClickListener();
 
         //initDataSort();
@@ -103,8 +88,6 @@ public class GroceryListActivity extends AppCompatActivity {
 
         nameSort(al_groceryList);
         showListView();
-
-
 
     }
 
