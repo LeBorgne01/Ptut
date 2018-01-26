@@ -48,7 +48,7 @@
     <string name="button_productList">Liste des produits</string>
     <string name="button_back">Retour</string>
     <string name="button_add">+</string>
-<<<<<<< HEAD
+
     <string name="spinner_sort_prompt">Trier</string>
     <string-array name="sort_array">
         <item>Trier par: Noms</item>
@@ -57,8 +57,8 @@
 
     </string-array>
 
-=======
->>>>>>> 8e02871827a347af42fcc0fe4ac3f353092efa24
+
+
     <string name="alertDialog_wrongPW">Mauvais mot de passe !</string>
     <string name="editText_productName">Nom du produit</string>
     <string name="editText_quantity">Quantité</string>
