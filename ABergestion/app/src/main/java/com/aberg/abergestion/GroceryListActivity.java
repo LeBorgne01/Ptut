@@ -47,7 +47,7 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private Button back;
     private ListView stockListView;
-    private ArrayList<String> dataTri=new ArrayList<>();
+    private String[] dataTri = {"Trier par :","Noms","Catégories","Quantités"};
     private ArrayList <Product> al_groceryList;
     private Product p;
     private Product p2;
@@ -71,23 +71,26 @@ public class GroceryListActivity extends AppCompatActivity {
         al_groceryList = new ArrayList<>();
         loadGroceryList(al_groceryList);
 
+        nameSort(al_groceryList);
 
         back = findViewById(R.id.button_back);
         add = findViewById(R.id.button_add);
         stockListView = (ListView) findViewById(R.id.listViewStock);
+
         spnSort= findViewById(R.id.spinner_sort);
 
         add.setOnClickListener(BtnAdd);
         back.setOnClickListener(BtnBack);
         stockListView.setOnItemClickListener(ClicRow);
-        //spnSort.setOnItemClickListener();
 
-        //initDataSort();
+
         adapt = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataTri);
         spnSort.setAdapter(adapt);
 
+        spnSort.setOnItemSelectedListener(spinnerSort);
 
-        nameSort(al_groceryList);
+
+
         showListView();
 
     }
@@ -220,8 +223,7 @@ public class GroceryListActivity extends AppCompatActivity {
         popup.show();
     }
 
-
-    private void popupDeleteProduct(int position){
+    private void popupDeleteProduct(final int position){
         //On instancie notre layout en tant que View
         LayoutInflater factory = LayoutInflater.from(GroceryListActivity.this);
         final View alertDialogView = factory.inflate(R.layout.alertdialog_delete_product, null);
@@ -232,35 +234,34 @@ public class GroceryListActivity extends AppCompatActivity {
         //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
         popup.setView(alertDialogView);
 
-        
+
 
         //On récupère les EditText de notre popup
-        EditText productName = findViewById(R.id.editText_popupDelProductName);
-        //EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupDelQuantity);
-        //EditText productType = alertDialogView.findViewById(R.id.editText_popupDelProductType);
+        final EditText productName = alertDialogView.findViewById(R.id.editText_popupDelProductName);
+        final EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupDelQuantity);
+        final EditText productType = alertDialogView.findViewById(R.id.editText_popupDelProductType);
 
         //On met un text dans ces EditTexts
-        //al_groceryList.get(position).getName()
-        //productName.setText("Hello");
-        //productQuantity.setText(Integer.toString(al_groceryList.get(position).getQuantity()));
-        //productType.setText(al_groceryList.get(position).getForm());
+        productName.setText(al_groceryList.get(position).getName());
+        productQuantity.setText(Integer.toString(al_groceryList.get(position).getQuantity()));
+        productType.setText(al_groceryList.get(position).getForm());
 
         //On donne un titre à l'AlertDialog
         popup.setTitle("Modifier/Supprimer produit");
 
 
         //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
-        popup.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+        popup.setNegativeButton("Supprimer", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //On ferme la popup
+                al_groceryList.remove(position);
 
-                String i = productName.getText().toString();
-                //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
-                Toast.makeText(GroceryListActivity.this, i, Toast.LENGTH_SHORT).show();
+                saveGroceryList(al_groceryList);
+                showListView();
+                Toast.makeText(GroceryListActivity.this, "Produit supprimé", Toast.LENGTH_SHORT).show();
             } });
 
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
-        popup.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+        popup.setPositiveButton("Annuler", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //On ferme la popup
             } });
@@ -268,12 +269,30 @@ public class GroceryListActivity extends AppCompatActivity {
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
         popup.setNeutralButton("Modifier", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //On ferme la popup
+                String prodName = productName.getText().toString();
+                String prodQuantity = productQuantity.getText().toString();
+                String prodType = productType.getText().toString();
+
+                if(isEmpty(prodName) || isEmpty(prodQuantity) || isEmpty(prodType)){
+                    alertDialog(getString(R.string.AlertDialog_champsrempli));
+                }
+                else{
+                    int temp = Integer.parseInt(prodQuantity);
+
+                    al_groceryList.get(position).setName(prodName);
+                    al_groceryList.get(position).setQuantity(temp);
+                    al_groceryList.get(position).setForm(prodType);
+
+                    saveGroceryList(al_groceryList);
+
+                    showListView();
+
+                    Toast.makeText(GroceryListActivity.this, "Produit modifié", Toast.LENGTH_SHORT).show();
+                }
+
             } });
         popup.show();
     }
-
-
 
     private void nameSort(ArrayList<Product> p) {
         // Tri par bulles.
@@ -314,7 +333,6 @@ public class GroceryListActivity extends AppCompatActivity {
 
     }
 
-
     private void categorySort (ArrayList <Product> p) {
         // Tri par bulles.
         Product temp;                                    // Valeur pour la permutation.
@@ -334,10 +352,6 @@ public class GroceryListActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
-
 
 
     //Fonction pour afficher un pop up avec un message et un bouton "Ok"
@@ -457,25 +471,24 @@ public class GroceryListActivity extends AppCompatActivity {
         }
 
     }
-    private View.OnClickListener spinnerSort = new View.OnClickListener(){
 
+    private Spinner.OnItemSelectedListener spinnerSort = new Spinner.OnItemSelectedListener(){
 
         @Override
-        public void onClick(View v){
+        public void onItemSelected(AdapterView<?> av, View v, int pos, long l) {
 
             String selected = (spnSort.getSelectedItem().toString());
-            System.out.print(selected);
-            System.out.print("sdgdg");
+
             Log.i("test", "onClick: sort "+selected);
 
            switch (selected) {
-               case "Trier par: Noms":
+               case "Noms":
                    nameSort(al_groceryList);
                    break;
-               case "Trier par:Categories":
-                   categorySort(al_groceryList);
+               case "Catégories":
+                   //categorySort(al_groceryList);
                    break;
-               case "Trier par:Quantités":
+               case "Quantités":
                    quantitySort(al_groceryList);
                    break;
                default:
@@ -486,7 +499,10 @@ public class GroceryListActivity extends AppCompatActivity {
            GroceryListActivity.this.showListView();
         }
 
+        @Override
+        public void onNothingSelected(AdapterView<?> v){
 
+        }
 
     };
 
