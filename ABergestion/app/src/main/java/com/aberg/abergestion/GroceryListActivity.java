@@ -1,5 +1,6 @@
 package com.aberg.abergestion;
 
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -225,30 +226,37 @@ public class GroceryListActivity extends AppCompatActivity {
         LayoutInflater factory = LayoutInflater.from(GroceryListActivity.this);
         final View alertDialogView = factory.inflate(R.layout.alertdialog_delete_product, null);
 
-        //On récupère les EditText de notre popup
-        EditText productName = alertDialogView.findViewById(R.id.editText_popupDelProductName);
-        EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupDelQuantity);
-        EditText productType = alertDialogView.findViewById(R.id.editText_popupDelProductType);
-
-        //On met un text dans ces EditTexts
-        //al_groceryList.get(position).getName()
-        productName.setText("Hello");
-        //productQuantity.setText(Integer.toString(al_groceryList.get(position).getQuantity()));
-        //productType.setText(al_groceryList.get(position).getForm());
-
         //Création de l'AlertDialog
         AlertDialog.Builder popup = new AlertDialog.Builder(this);
 
         //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
         popup.setView(alertDialogView);
 
+        
+
+        //On récupère les EditText de notre popup
+        EditText productName = findViewById(R.id.editText_popupDelProductName);
+        //EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupDelQuantity);
+        //EditText productType = alertDialogView.findViewById(R.id.editText_popupDelProductType);
+
+        //On met un text dans ces EditTexts
+        //al_groceryList.get(position).getName()
+        //productName.setText("Hello");
+        //productQuantity.setText(Integer.toString(al_groceryList.get(position).getQuantity()));
+        //productType.setText(al_groceryList.get(position).getForm());
+
         //On donne un titre à l'AlertDialog
         popup.setTitle("Modifier/Supprimer produit");
+
 
         //On affecte un bouton "OK" à notre AlertDialog et on lui affecte un évènement
         popup.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //On ferme la popup
+
+                String i = productName.getText().toString();
+                //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                Toast.makeText(GroceryListActivity.this, i, Toast.LENGTH_SHORT).show();
             } });
 
         //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
