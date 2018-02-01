@@ -74,5 +74,13 @@ public  class Product {
         this.form = form;
     }
 
+    public void setNumbrePrevent(int numbrePrevent){
+        this.numbrePrevent = numbrePrevent;
+    }
+
+    public int getNumbrePrevent(){
+        return this.numbrePrevent;
+    }
+
 
 }

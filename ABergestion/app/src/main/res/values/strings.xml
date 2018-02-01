@@ -63,5 +63,9 @@
     <string name="string_category">Catégorie :</string>
     <string name="string_cancel">Annuler</string>
     <string name="string_alimentary">Alimentaire</string>
+    <string name="textView_ourProducts">Vos Produits</string>
+    <string name="editText_purchaseDate">Date d\'achat</string>
+    <string name="editText_expirationDate">Date de péremption</string>
+    <string name="editText_numbrePrevent">Prévenir quand il reste</string>
 
 </resources>

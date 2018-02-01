@@ -58,6 +58,7 @@ public class StockActivity extends AppCompatActivity {
             Intent intent = new Intent(StockActivity.this, GroceryListActivity.class);
             startActivity(intent);
 
+
         }
 
     };
