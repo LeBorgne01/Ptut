@@ -196,8 +196,9 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
                 Intent intent = new Intent(AddRevenuActivity.this,BudgetActivity.class);
-            startActivity(intent);
-            return true;
+                startActivity(intent);
+                AddRevenuActivity.this.finish();
+                return true;
         }
         return false;
 
