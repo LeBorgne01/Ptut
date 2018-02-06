@@ -58,6 +58,7 @@ public class StockActivity extends AppCompatActivity {
             Intent intent = new Intent(StockActivity.this, GroceryListActivity.class);
             startActivity(intent);
 
+
         }
 
     };
@@ -65,8 +66,8 @@ public class StockActivity extends AppCompatActivity {
     private View.OnClickListener BtnProductList = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-
-
+            Intent intent = new Intent(StockActivity.this,RecapStockActivity.class);
+            startActivity(intent);
         }
 
     };
