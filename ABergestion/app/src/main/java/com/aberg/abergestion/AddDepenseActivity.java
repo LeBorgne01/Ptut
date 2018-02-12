@@ -199,6 +199,7 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent intent = new Intent(AddDepenseActivity.this,BudgetActivity.class);
             startActivity(intent);
+            AddDepenseActivity.this.finish();
             return true;
         }
         return false;

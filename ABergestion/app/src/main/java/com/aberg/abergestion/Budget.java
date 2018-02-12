@@ -23,9 +23,13 @@ public class Budget implements Serializable {
         this.montantData = new ArrayList<String>();
         if(datas != null) {
             for (int i = 0; i < datas.size(); i++) {
-                if(datas.get(i).getMontant() < 0)
-                    montantData.add(String.valueOf(datas.get(i).getMontant()));
-                else montantData.add("+ "+String.valueOf(datas.get(i).getMontant()));
+                if(datas.get(i).getMontant() < 0) {
+                    System.out.println(datas.get(i).getMontant());
+                    String stringTmp =String.valueOf(datas.get(i).getMontant()).substring(1);
+                    System.out.println(stringTmp);
+                    montantData.add(" - " + stringTmp + " €");
+                }
+                else montantData.add("+ "+String.valueOf(datas.get(i).getMontant()) + " €");
             }
         }
     }
