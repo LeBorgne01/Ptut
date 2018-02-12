@@ -219,7 +219,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
                 saveListDR(listDR);
                 showListView();
                 if(!tmp) {
-                    Toast.makeText(DepenseRevenuActivity.this, "Dépense supprimé", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DepenseRevenuActivity.this, "Dépense supprimée", Toast.LENGTH_SHORT).show();
                 }
                 else Toast.makeText(DepenseRevenuActivity.this, "Revenu supprimé", Toast.LENGTH_SHORT).show();
             } });
@@ -229,7 +229,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
                 LayoutInflater factory = LayoutInflater.from(DepenseRevenuActivity.this);
 
                 String[] listCatR ={"Salaire","Jeu d'argent","Investissement"};
-                String[] listCatD= {"Jeu","Nourriture&Hygiène","Restaurant","Sortie","Shopping"};
+                final String[] listCatD= {"Jeu","Nourriture&Hygiène","Restaurant","Sortie","Shopping"};
 
                 if(listDR.get(pos).getMontant() < 0) {
                     adaptCat = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, listCatD);
@@ -262,20 +262,20 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
 
                     Button button_valider = (Button)alertDialogView_modifier_dr.findViewById(R.id.button_valider);
                     button_valider.setVisibility(View.INVISIBLE);
-                    EditText editText_intitule = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_intitule);
+                    final EditText editText_intitule = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_intitule);
                     editText_intitule.setText(listDR.get(pos).getIntitule());
-                    EditText editText_montant = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_montant);
+                    final EditText editText_montant = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_montant);
                     editText_montant.setText(String.valueOf(listDR.get(pos).getMontant()));
-                    Spinner spinner_jour = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_jour);
+                    final Spinner spinner_jour = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_jour);
                     spinner_jour.setAdapter(adapt1);
                     spinner_jour.setSelection(listDR.get(pos).getDate().getJour() - 1);
-                    Spinner spinner_mois = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_mois);
+                    final Spinner spinner_mois = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_mois);
                     spinner_mois.setAdapter(adapt3);
                     spinner_mois.setSelection(listDR.get(pos).getDate().getMois() - 1);
-                    Spinner spinner_annee = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_annee);
+                    final Spinner spinner_annee = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_annee);
                     spinner_annee.setAdapter(adapt2);
                     spinner_annee.setSelection(listDR.get(pos).getDate().getAnnee() - 2019);
-                    Spinner spinner_cat = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_categorie);
+                    final Spinner spinner_cat = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_categorie);
                     spinner_cat.setAdapter(adaptCat);
                     int positionSpinnerCat = 0;
                     String categorieChoisi = listDR.get(pos).getCategorie();
@@ -306,12 +306,18 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
                             break;
                     }
                     spinner_cat.setSelection(positionSpinnerCat);
-                    Switch switch_perio = (Switch) alertDialogView_modifier_dr.findViewById(R.id.switch_periodicite);
+                    final Switch switch_perio = (Switch) alertDialogView_modifier_dr.findViewById(R.id.switch_periodicite);
                     switch_perio.setChecked(listDR.get(pos).isPeriodicite());
 
                     popup2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //On ferme la popup
+                        Date dtmp = new Date(Integer.parseInt(spinner_jour.getSelectedItem().toString()),Integer.parseInt(spinner_mois.getSelectedItem().toString()),Integer.parseInt(spinner_annee.getSelectedItem().toString()));
+                        donneesBudget tmp = new donneesBudget(editText_intitule.getText().toString(),dtmp,Double.parseDouble(editText_montant.getText().toString()),switch_perio.isChecked(),spinner_cat.getSelectedItem().toString());
+                        listDR.remove(listDR.get(pos));
+                        listDR.add(tmp);
+                        //System.out.println("pos: "+ listDR.get(pos).getMontant());
+                        saveListDR(listDR);
+                        showListView();
                     } });
 
                     popup2.show();
