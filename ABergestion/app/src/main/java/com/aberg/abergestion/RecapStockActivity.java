@@ -24,6 +24,8 @@ public class RecapStockActivity extends AppCompatActivity {
     private Stock stock;
     private Button addProduct;
 
+    private String[] dataCategory = {"Catégories : ", "Alimentaire", "Hygiène", "Animalier", "Autres"};
+
     private int productNumber;
 
     @Override
@@ -130,9 +132,9 @@ public class RecapStockActivity extends AppCompatActivity {
         popup.setView(alertDialogView);
 
         //On charge le spinner
-        //final Spinner productCategory = alertDialogView.findViewById(R.id.spinner_popupProductCategory);
-        //ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataCategory);
-        //productCategory.setAdapter(categoryAdapter);
+        final Spinner productCategory = alertDialogView.findViewById(R.id.spinner_categoryAddProduct);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataCategory);
+        productCategory.setAdapter(categoryAdapter);
 
         //On donne un titre à l'AlertDialog
         popup.setTitle(R.string.alertDialog_addProduct);
@@ -144,35 +146,42 @@ public class RecapStockActivity extends AppCompatActivity {
         popup.setPositiveButton(R.string.text_add, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-//                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
-//                EditText productName = alertDialogView.findViewById(R.id.editText_popupProductName);
-//                EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupQuantity);
-//                EditText productType = alertDialogView.findViewById(R.id.editText_popupProductType);
-//
-//                String category = productCategory.getSelectedItem().toString();
-//                String name = productName.getText().toString();
-//                String quantity = productQuantity.getText().toString();
-//                String type = productType.getText().toString();
+                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
+                EditText productName = alertDialogView.findViewById(R.id.editText_nameAddProduct);
+                EditText productQuantity = alertDialogView.findViewById(R.id.editText_quantityAddProduct);
+                EditText productType = alertDialogView.findViewById(R.id.editText_typeAddProduct);
+                EditText productPurchaseDate = alertDialogView.findViewById(R.id.editText_purchaseDateAddProduct);
+                EditText productExpirationDate = alertDialogView.findViewById(R.id.editText_expirationDateAddProduct);
+                EditText productNumbrePrevent = alertDialogView.findViewById(R.id.editText_numbrePreventAddProduct);
+                Spinner productCategory = alertDialogView.findViewById(R.id.spinner_categoryAddProduct);
 
-//                if (isEmpty(name) || isEmpty(quantity) || isEmpty(type)) {
-//                    alertDialog(getString(R.string.AlertDialog_champsrempli));
-//                } else {
-//                    if(category.equals(getString(R.string.string_category))){
-//                        alertDialog(getString(R.string.alertDialog_chooseCategory));
-//                    }
-//                    else {
-//                        int temp = Integer.parseInt(quantity);
-//
-//
-//                       // al_groceryList.add(new Product(name, category, temp, null, null, type));
-//                        //saveGroceryList(al_groceryList);
-//
-//                       // showListView();
-//
-//                        //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
-//                       // Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
+                String category = productCategory.getSelectedItem().toString();
+                String name = productName.getText().toString();
+                String quantity = productQuantity.getText().toString();
+                String type = productType.getText().toString();
+                String purchaseDate = productPurchaseDate.getText().toString();
+                String expirationDate = productExpirationDate.getText().toString();
+                String tempNumbrePrevent = productNumbrePrevent.getText().toString();
+
+                if (isEmpty(name) || isEmpty(quantity) || isEmpty(type) || isEmpty(purchaseDate) || isEmpty(expirationDate) || isEmpty(tempNumbrePrevent) || category.equals("Catégories : ")) {
+                    alertDialog(getString(R.string.AlertDialog_champsrempli));
+                } else {
+                    if(category.equals(getString(R.string.string_category))){
+                        alertDialog(getString(R.string.alertDialog_chooseCategory));
+                    }
+                    else {
+                        int temp = Integer.parseInt(quantity);
+
+
+                       // al_groceryList.add(new Product(name, category, temp, null, null, type));
+                        //saveGroceryList(al_groceryList);
+
+                       // showListView();
+
+                        //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                       // Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
+                    }
+                }
 
             }
         });
