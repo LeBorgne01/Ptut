@@ -91,7 +91,7 @@ public class RecapStockActivity extends AppCompatActivity {
     private ListView.OnItemClickListener ClicRow = new ListView.OnItemClickListener(){
         @Override
         public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-            alertDialog("Modifier");
+            gestionProduct(pos);
         }
     };
 
@@ -281,5 +281,217 @@ public class RecapStockActivity extends AppCompatActivity {
 
         //On affiche la pop up
         bugAlert.show();
+    }
+
+    private void gestionProduct(final int pos){
+        final Product product = this.stock.getStock().get(pos);
+
+        String sentence = product.getName()+'\n'+"Stock : "+product.getQuantity()+" "+product.getForm()+'\n'+"Péremption : "+product.getExpirationDate();
+
+
+        //On crée la fenetre
+        AlertDialog popup = new AlertDialog.Builder(this).create();
+
+        //On applique le message en paramètre
+        popup.setMessage(sentence);
+
+        //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
+        popup.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        //On ajoute le bouton negatif qui permet d'ouvrir une popup pour modifier ce produit ou le supprimer
+        popup.setButton(AlertDialog.BUTTON_NEGATIVE, "Modifier", new AlertDialog.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                popopModify(product, pos);
+            }
+        });
+
+        popup.setButton(AlertDialog.BUTTON_NEUTRAL, "+/-", new AlertDialog.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+
+        //On affiche la pop up
+        popup.show();
+    }
+
+    private void popopModify(final Product product, final int pos){
+
+        //On instancie notre layout en tant que View
+        LayoutInflater factory = LayoutInflater.from(RecapStockActivity.this);
+        final View alertDialogView = factory.inflate(R.layout.alertdialog_stockproduct, null);
+
+        //Création de l'AlertDialog
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+
+        //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
+        popup.setView(alertDialogView);
+
+        //On charge le spinner
+        final Spinner productCategory = alertDialogView.findViewById(R.id.spinner_categoryAddProduct);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataCategory);
+        productCategory.setAdapter(categoryAdapter);
+
+        //On donne un titre à l'AlertDialog
+        popup.setTitle(R.string.alertDialog_addProduct);
+
+        //On modifie l'icône de l'AlertDialog pour le fun ;)
+        //popup.setIcon(android.R.drawable.ic_dialog_alert);
+
+        //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
+        final EditText productName = alertDialogView.findViewById(R.id.editText_nameAddProduct);
+        final EditText productQuantity = alertDialogView.findViewById(R.id.editText_quantityAddProduct);
+        final EditText productType = alertDialogView.findViewById(R.id.editText_typeAddProduct);
+        final EditText productPurchaseDate = alertDialogView.findViewById(R.id.editText_purchaseDateAddProduct);
+        final EditText productExpirationDate = alertDialogView.findViewById(R.id.editText_expirationDateAddProduct);
+        final EditText productNumbrePrevent = alertDialogView.findViewById(R.id.editText_numbrePreventAddProduct);
+        Spinner tempProductCategory = alertDialogView.findViewById(R.id.spinner_categoryAddProduct);
+
+
+
+        productName.setText(product.getName());
+        productType.setText(product.getForm());
+        productPurchaseDate.setText(product.getPurchaseDate());
+        productExpirationDate.setText(product.getExpirationDate());
+        productNumbrePrevent.setText(Integer.toString(product.getNumbrePrevent()));
+        productQuantity.setText(Integer.toString(product.getQuantity()));
+
+        int tempCategory = 0;
+        String tempCategorySelect = product.getCategory();
+
+        for(int i=0; i<dataCategory.length;i++){
+            if(dataCategory[i].equals(tempCategorySelect)){
+                tempCategory = i;
+                break;
+            }
+        }
+
+        tempProductCategory.setSelection(tempCategory);
+
+
+        //On affecte un bouton "Ajouter" à notre AlertDialog et on lui affecte un évènement
+        popup.setPositiveButton(R.string.text_add, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                String category = productCategory.getSelectedItem().toString();
+                String name = productName.getText().toString();
+                String quantity = productQuantity.getText().toString();
+                String type = productType.getText().toString();
+                String purchaseDate = productPurchaseDate.getText().toString();
+                String expirationDate = productExpirationDate.getText().toString();
+                String tempNumbrePrevent = productNumbrePrevent.getText().toString();
+
+                if (isEmpty(name) || isEmpty(quantity) || isEmpty(type) || isEmpty(purchaseDate) || isEmpty(expirationDate) || isEmpty(tempNumbrePrevent) || category.equals("Catégories : ")) {
+                    alertDialog(getString(R.string.AlertDialog_champsrempli));
+                }
+                else {
+                    if(category.equals(getString(R.string.string_category))){
+                        alertDialog(getString(R.string.alertDialog_chooseCategory));
+                    }
+                    else {
+                        int temp = Integer.parseInt(quantity);
+                        int temp2 = Integer.parseInt(tempNumbrePrevent);
+
+                        product.setName(name);
+                        product.setCategory(category);
+                        product.setQuantity(temp);
+                        product.setForm(type);
+                        product.setPurchaseDate(purchaseDate);
+                        product.setExpirationDate(expirationDate);
+                        product.setNumbrePrevent(temp2);
+
+
+                        saveStock(stock);
+
+                        showListStock();
+
+                        //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                        // Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
+        popup.setNegativeButton(R.string.string_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //On ferme la popup
+            }
+        });
+
+        popup.setNeutralButton("Supprimer", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                stock.getStock().remove(pos);
+
+                saveStock(stock);
+
+                showListStock();
+            }
+        });
+        popup.show();
+    }
+
+    private void popopAddOrSubstract(final Product product){
+        //On crée la fenetre
+        AlertDialog popup = new AlertDialog.Builder(this).create();
+
+        //On applique le message en paramètre
+        popup.setMessage("Vous pouvez ajouter ou enlever une unité de stock");
+
+        //On ajoute le bouton positif 'Ok' qui ferme juste la pop up
+        popup.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alertDialog_ok), new AlertDialog.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        popup.setButton(AlertDialog.BUTTON_NEUTRAL, "+",new AlertDialog.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                int temp = product.getQuantity();
+                product.setQuantity(temp);
+
+                saveStock(stock);
+
+                showListStock();
+            }
+        });
+
+        popup.setButton(AlertDialog.BUTTON_NEGATIVE, "-",new AlertDialog.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                int temp = product.getQuantity();
+
+                if(temp > 0){
+                    product.setQuantity(temp);
+
+                    saveStock(stock);
+
+                    showListStock();
+                }
+                else{
+                    //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                     Toast.makeText(RecapStockActivity.this, "Il n'y a plus de stock", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+
+        //On affiche la pop up
+        popup.show();
     }
 }
