@@ -29,6 +29,7 @@
     <string name="alertDialog_confirmationPWDifferent">La confirmation de mot de passe est différente du mot de passe</string>
     <string name="button_erase">Effacer</string>
     <string name="textView_enterPW">Entrez votre mot de passe :</string>
+    <string name="alertdialog_choix_perio">Periodicité</string>
 
     <!-- Bouton numerique -->
     <string name="button_1">1</string>
@@ -48,7 +49,6 @@
     <string name="button_productList">Liste des produits</string>
     <string name="button_back">Retour</string>
     <string name="button_add">+</string>
-
     <string name="spinner_sort_prompt">Trier</string>
 
     <string name="alertDialog_wrongPW">Mauvais mot de passe !</string>
