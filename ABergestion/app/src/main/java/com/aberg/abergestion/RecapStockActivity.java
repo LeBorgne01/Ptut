@@ -2,16 +2,21 @@ package com.aberg.abergestion;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPropertyAnimatorUpdateListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,6 +28,9 @@ public class RecapStockActivity extends AppCompatActivity {
 
     private Stock stock;
     private Button addProduct;
+    private ListView listStock;
+
+    private String[] dataCategory = {"Catégories : ", "Alimentaire", "Hygiène", "Animalier", "Autres"};
 
     private int productNumber;
 
@@ -35,17 +43,63 @@ public class RecapStockActivity extends AppCompatActivity {
         loadStock(this.stock);
 
         addProduct = findViewById(R.id.button_addProduct);
+        listStock = findViewById(R.id.listView_stockProduct);
 
         addProduct.setOnClickListener(btnAdd);
 
-
+        showListStock();
     }
+
+    private void showListStock(){
+        // Définition des colonnes
+        // SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
+        // Ensuite on met le nombre de colonnes que l'on veut
+        String[] colums = new String[]{"_id", "col1", "col2"};
+
+        // Définition des données du tableau
+        // On affecte au matrixCursor les colonnes que l'on vient de créer
+        // On démarre le MatrixCursor
+        MatrixCursor matrixCursor = new MatrixCursor(colums);
+        startManagingCursor(matrixCursor);
+
+        //On ajoute des objets au MatrixCursor
+        for (int i = 0; i < stock.getStock().size(); i++) {
+            matrixCursor.addRow(new Object[]{i, stock.getStock().get(i).getName(), stock.getStock().get(i).getForm() + ": " +stock.getStock().get(i).getQuantity()});
+        }
+
+
+        // matrixCursor.addRow(new Object[]{0, al_groceryList.get(0).getName(), al_groceryList.get(0).getQuantity()+" "+al_groceryList.get(0).getForm()});
+        // matrixCursor.addRow(new Object[]{2, "col1:ligne2", "col2:ligne2"});
+
+        // On prend les données des colonnes 1 et 2 ...
+        String[] from = new String[]{"col1", "col2"};
+        // ... pour les placer dans les TextView définis dans "row_item.xml"
+        int[] to = new int[]{R.id.textView_Col1, R.id.textView_Col2};
+
+        // On crée l'objet SimpleCursorAdapter
+        // On met le context (this ici), ensuite la définition des lignes de la liste, ensuite on ajoute les lignes, on définit les colonnes, on les lient aux textView, on met le flag à 0
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.row_item, matrixCursor, from, to, 0);
+
+
+
+        // On lie la liste avec l'adapter
+        listStock.setAdapter(adapter);
+
+        listStock.setOnItemClickListener(ClicRow);
+    }
+
+    private ListView.OnItemClickListener ClicRow = new ListView.OnItemClickListener(){
+        @Override
+        public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+            alertDialog("Modifier");
+        }
+    };
 
     private void loadStock(Stock stock){
         SharedPreferences user = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = user.edit();
 
-        String[] loadText = new String[user.getInt("NOMBRE_STOCK", 0)];
+        String[] loadText = new String[user.getInt("NOMBRE_STOCKS", 0)];
 
 
 
@@ -64,6 +118,7 @@ public class RecapStockActivity extends AppCompatActivity {
         int tempNumbrePrevent;
 
         String[] temp;
+
 
         for(int i=0; i<loadText.length; i++){
             temp = loadText[i].split(";");
@@ -130,9 +185,9 @@ public class RecapStockActivity extends AppCompatActivity {
         popup.setView(alertDialogView);
 
         //On charge le spinner
-        //final Spinner productCategory = alertDialogView.findViewById(R.id.spinner_popupProductCategory);
-        //ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataCategory);
-        //productCategory.setAdapter(categoryAdapter);
+        final Spinner productCategory = alertDialogView.findViewById(R.id.spinner_categoryAddProduct);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, dataCategory);
+        productCategory.setAdapter(categoryAdapter);
 
         //On donne un titre à l'AlertDialog
         popup.setTitle(R.string.alertDialog_addProduct);
@@ -144,35 +199,47 @@ public class RecapStockActivity extends AppCompatActivity {
         popup.setPositiveButton(R.string.text_add, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-//                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
-//                EditText productName = alertDialogView.findViewById(R.id.editText_popupProductName);
-//                EditText productQuantity = alertDialogView.findViewById(R.id.numericText_popupQuantity);
-//                EditText productType = alertDialogView.findViewById(R.id.editText_popupProductType);
-//
-//                String category = productCategory.getSelectedItem().toString();
-//                String name = productName.getText().toString();
-//                String quantity = productQuantity.getText().toString();
-//                String type = productType.getText().toString();
+                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
+                EditText productName = alertDialogView.findViewById(R.id.editText_nameAddProduct);
+                EditText productQuantity = alertDialogView.findViewById(R.id.editText_quantityAddProduct);
+                EditText productType = alertDialogView.findViewById(R.id.editText_typeAddProduct);
+                EditText productPurchaseDate = alertDialogView.findViewById(R.id.editText_purchaseDateAddProduct);
+                EditText productExpirationDate = alertDialogView.findViewById(R.id.editText_expirationDateAddProduct);
+                EditText productNumbrePrevent = alertDialogView.findViewById(R.id.editText_numbrePreventAddProduct);
+                Spinner productCategory = alertDialogView.findViewById(R.id.spinner_categoryAddProduct);
 
-//                if (isEmpty(name) || isEmpty(quantity) || isEmpty(type)) {
-//                    alertDialog(getString(R.string.AlertDialog_champsrempli));
-//                } else {
-//                    if(category.equals(getString(R.string.string_category))){
-//                        alertDialog(getString(R.string.alertDialog_chooseCategory));
-//                    }
-//                    else {
-//                        int temp = Integer.parseInt(quantity);
-//
-//
-//                       // al_groceryList.add(new Product(name, category, temp, null, null, type));
-//                        //saveGroceryList(al_groceryList);
-//
-//                       // showListView();
-//
-//                        //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
-//                       // Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
+                String category = productCategory.getSelectedItem().toString();
+                String name = productName.getText().toString();
+                String quantity = productQuantity.getText().toString();
+                String type = productType.getText().toString();
+                String purchaseDate = productPurchaseDate.getText().toString();
+                String expirationDate = productExpirationDate.getText().toString();
+                String tempNumbrePrevent = productNumbrePrevent.getText().toString();
+
+                if (isEmpty(name) || isEmpty(quantity) || isEmpty(type) || isEmpty(purchaseDate) || isEmpty(expirationDate) || isEmpty(tempNumbrePrevent) || category.equals("Catégories : ")) {
+                    alertDialog(getString(R.string.AlertDialog_champsrempli));
+                }
+                else {
+                    if(category.equals(getString(R.string.string_category))){
+                        alertDialog(getString(R.string.alertDialog_chooseCategory));
+                    }
+                    else {
+                        int temp = Integer.parseInt(quantity);
+                        int temp2 = Integer.parseInt(tempNumbrePrevent);
+
+                        Product newProduct = new Product(name,category,temp,purchaseDate,expirationDate,type);
+
+                        newProduct.setNumbrePrevent(temp2);
+
+                        stock.addProduct(newProduct);
+                        saveStock(stock);
+
+                        showListStock();
+
+                        //On affiche dans un Toast le texte contenu dans l'EditText de notre AlertDialog
+                       // Toast.makeText(GroceryListActivity.this, R.string.toast_productAdded, Toast.LENGTH_SHORT).show();
+                    }
+                }
 
             }
         });
