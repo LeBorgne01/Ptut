@@ -42,15 +42,7 @@ public class StockActivity extends AppCompatActivity {
 
 
     }
-
-    public void activityStock(){
-
-
-
-        setContentView(R.layout.activity_stock);
-
-
-    }
+    
 
     private View.OnClickListener BtnGroceryList = new View.OnClickListener(){
         @Override
