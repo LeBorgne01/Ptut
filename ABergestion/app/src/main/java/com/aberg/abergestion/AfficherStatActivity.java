@@ -9,5 +9,5 @@ import android.widget.TabHost;
 import android.widget.Toolbar;
 
 public class AfficherStatActivity extends AppCompatActivity {
-    
+
 }
