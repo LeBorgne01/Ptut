@@ -1,41 +1,43 @@
 package com.aberg.abergestion;
 
+import android.app.ActionBar;
+import android.app.Fragment;
 import android.app.TabActivity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.TabHost;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionBarContainer;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class AfficherStatActivity extends TabActivity {
+public class AfficherStatsNumActivity extends AppCompatActivity{
 
     private ArrayList<donneesBudget> listDR;
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
+        //TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_afficher_stats_main);
+        setContentView(R.layout.activity_afficher_stats_num);
 
-        Resources res = getResources();
-        TabHost tabHost = getTabHost();
-        TabHost.TabSpec spec; // reusable tabspec for each tab
-        Intent intent;
+        listDR = new ArrayList<>();
+        loadListDR(listDR);
 
-        intent = new Intent(this, AfficherStatsNumActivity.class);
-        spec = tabHost.newTabSpec("Stat_num").setIndicator("Bâtiments").setContent(intent);
-        tabHost.addTab(spec);
+        TextView tv_contenu_mlpd = (TextView)findViewById(R.id.textView_content_mlpd);
+        tv_contenu_mlpd.setText(calcMoisLePlusDe(listDR));
 
-        intent = new Intent(this, AddDepenseActivity.class);
-        spec = tabHost.newTabSpec("research")
-                .setIndicator("Recherche")
-                .setContent(intent);
-        tabHost.addTab(spec);
-
-        tabHost.setCurrentTab(0);
     }
 
     public void saveListDR(ArrayList<donneesBudget> liste){ //Fonction qui permet la sauvegarde de la liste dans un fichier .txt
@@ -69,6 +71,26 @@ public class AfficherStatActivity extends TabActivity {
 
         //On met à jour le fichier
         editor.commit();
+    }
+
+    private String calcMoisLePlusDe(ArrayList<donneesBudget> listDR){
+        int nbDepParMois[] = new int[11];
+        String mois[]={"Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"};
+        String moisLePlusDepensier= new String();
+        for(int i =0; i < listDR.size();i++){
+            int indiceMois = listDR.get(i).getDate().getMois();
+            nbDepParMois[indiceMois-1]++;
+        }
+        int max = nbDepParMois[0];
+        int indiceMax = 0;
+        for(int i =0; i < nbDepParMois.length;i++){
+            //System.out.println(i + ":"+nbDepParMois[i]);
+            if(max<nbDepParMois[i]){
+                indiceMax = i;
+            }
+        }
+        moisLePlusDepensier = mois[indiceMax];
+        return moisLePlusDepensier;
     }
 
     public void loadListDR(ArrayList<donneesBudget> liste){
@@ -120,5 +142,6 @@ public class AfficherStatActivity extends TabActivity {
         Date d = new Date(Integer.parseInt(tabS[0]),Integer.parseInt(tabS[1]),Integer.parseInt(tabS[2])); //On creér une date à partir de ce tableau
         return d; //On return la date
     }
+
 
 }
