@@ -315,7 +315,8 @@ public class RecapStockActivity extends AppCompatActivity {
         popup.setButton(AlertDialog.BUTTON_NEUTRAL, "+/-", new AlertDialog.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                popopAddOrSubstract(stock.getStock().get(pos));
+                showListStock();
             }
         });
 
@@ -461,6 +462,7 @@ public class RecapStockActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int temp = product.getQuantity();
+                temp++;
                 product.setQuantity(temp);
 
                 saveStock(stock);
@@ -475,7 +477,10 @@ public class RecapStockActivity extends AppCompatActivity {
                 int temp = product.getQuantity();
 
                 if(temp > 0){
+                    temp--;
                     product.setQuantity(temp);
+
+
 
                     saveStock(stock);
 
