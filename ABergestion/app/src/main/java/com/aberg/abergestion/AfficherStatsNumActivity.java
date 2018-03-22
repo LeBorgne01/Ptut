@@ -229,17 +229,25 @@ public class AfficherStatsNumActivity extends Activity {
         double moyenne = 0.0;
         double somme = 0.0;
         double nbRevParMois[] = new double[11];
+
+        Calendar rightNow= Calendar.getInstance();
+        int anneeEnCours = rightNow.get(Calendar.YEAR);
+
         for(int i = 0; i < listDR.size(); i++){
-            if(listDR.get(i).getMontant()>0) {
-                int indiceMois = listDR.get(i).getDate().getMois();
-                nbRevParMois[indiceMois - 1] += listDR.get(i).getMontant();
+            if(listDR.get(i).getDate().getAnnee() == anneeEnCours) {
+                if (listDR.get(i).getMontant() > 0) {
+                    int indiceMois = listDR.get(i).getDate().getMois();
+                    nbRevParMois[indiceMois - 1] += listDR.get(i).getMontant();
+                }
             }
         }
+
+        int indiceFin = rightNow.get(Calendar.MONTH);
 
         for(int j = 0; j < nbRevParMois.length; j++){
             somme += nbRevParMois[j];
         }
-        moyenne = ((int)somme/(nbRevParMois.length+1)*100)/100;
+        moyenne = ((int)somme/(indiceFin+1)*100)/100;
         return moyenne;
     }
 
@@ -247,17 +255,25 @@ public class AfficherStatsNumActivity extends Activity {
         double moyenne = 0.0;
         double somme = 0.0;
         double nbDepParMois[] = new double[11];
+
+        Calendar rightNow= Calendar.getInstance();
+        int anneeEnCours = rightNow.get(Calendar.YEAR);
+
         for(int i = 0; i < listDR.size(); i++){
-            if(listDR.get(i).getMontant()<0) {
-                int indiceMois = listDR.get(i).getDate().getMois();
-                nbDepParMois[indiceMois - 1] += (-listDR.get(i).getMontant());
+            if(listDR.get(i).getDate().getAnnee() == anneeEnCours) {
+                if (listDR.get(i).getMontant() < 0) {
+                    int indiceMois = listDR.get(i).getDate().getMois();
+                    nbDepParMois[indiceMois - 1] += (-listDR.get(i).getMontant());
+                }
             }
         }
+
+        int indiceFin=rightNow.get(Calendar.MONTH);
 
         for(int j = 0; j < nbDepParMois.length; j++){
             somme += nbDepParMois[j];
         }
-        moyenne = ((int)somme/(nbDepParMois.length+1)*100)/100;
+        moyenne = ((int)somme/(indiceFin+1)*100)/100;
         return moyenne;
     }
 
