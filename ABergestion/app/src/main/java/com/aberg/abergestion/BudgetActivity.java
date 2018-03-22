@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
-import android.view.MotionEvent;
 import android.view.View;
 
 import java.io.Serializable;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 public class BudgetActivity extends AppCompatActivity implements View.OnClickListener,Serializable{
 
     private TextView budget_restant,textView_budget_restant;
-    private Button button_voir_detail, add_depense, add_revenu;
+    private Button button_voir_detail, add_depense, add_revenu,buttonAfficherStats;
     private donneesBudget initList;
     private ArrayList<donneesBudget> listDR;
     double budgetMontantTotal = 0;
@@ -43,6 +42,8 @@ public class BudgetActivity extends AppCompatActivity implements View.OnClickLis
         button_voir_detail.setOnClickListener(this);
         add_depense.setOnClickListener(this);
         add_revenu.setOnClickListener(this);
+        buttonAfficherStats = findViewById(R.id.button_afficher_stats);
+        buttonAfficherStats.setOnClickListener(this);
     }
 
     private void activityBudget() {
@@ -69,6 +70,11 @@ public class BudgetActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(intent);
             BudgetActivity.this.finish();
         }
+        if(view.getId() == R.id.button_afficher_stats){
+            Intent intent = new Intent(BudgetActivity.this, AfficherStatActivity.class);
+            startActivity(intent);
+            BudgetActivity.this.finish();
+        }
     }
 
     /*@Override
@@ -78,6 +84,13 @@ public class BudgetActivity extends AppCompatActivity implements View.OnClickLis
         }
         return true;
     }*/
+
+    public Date toDate(String s){
+        String[] tabS = s.split("/");
+        Date d = new Date(Integer.parseInt(tabS[0]),Integer.parseInt(tabS[1]),Integer.parseInt(tabS[2]));
+        System.out.println(d);
+        return d;
+    }
 
     private void loadListDR(ArrayList<donneesBudget> liste){
         //On ouvre le fichier de preference
@@ -97,6 +110,7 @@ public class BudgetActivity extends AppCompatActivity implements View.OnClickLis
         double tempMontant;
         boolean tempPeriodicite;
         String tempCategorie;
+        String tempTypePeriodicite;
 
         //Ce tableau permet de récupérer le splitage de la chaine du tableau loadText
         String[] temp;
@@ -109,15 +123,14 @@ public class BudgetActivity extends AppCompatActivity implements View.OnClickLis
 
                 //On récupère nos variables
                 tempIntitule = temp[0];
-                System.out.println(tempIntitule+"\n");
-                tempDate = new Date(0,0,0);
-                System.out.println(temp[1]);
+                tempDate = toDate(temp[1]);
                 tempMontant = Double.parseDouble(temp[2]);
                 tempPeriodicite = Boolean.parseBoolean(temp[3]);
-                tempCategorie = temp[4];
+                tempTypePeriodicite = temp[4];
+                tempCategorie = temp[5];
 
                 //On ajoute notre produit à l'arrayList
-                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite,tempCategorie));
+                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite,tempTypePeriodicite,tempCategorie));
             }
 
         }

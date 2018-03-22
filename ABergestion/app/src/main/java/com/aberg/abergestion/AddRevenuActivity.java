@@ -9,10 +9,13 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -39,6 +42,7 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
     private Button button_valider;
     private ArrayList<donneesBudget> listDR;
     private String[] listCat ={"Salaire","Jeu","Investissement"};
+    private RadioButton rb_mensuel_popup, rb_annuel_popup, rb_hebdo_popup,rb_trimestriel_popup;
 
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ABergestion";
 
@@ -99,14 +103,14 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
 
     private View.OnClickListener BtnValider = new View.OnClickListener(){
 
-        private Boolean isEmpty(String s){
-            if(s.length() != 0){
-                return false;
+        private Boolean isEmpty(String s){ //Fonction qui vérifie si un champ est vide
+            if(s.length() != 0){ //On test la taille de la chaîne entré
+                return false; //Si elle est égale à 0, on retourne false
             }
-            return true;
+            return true; //Sinon, on retourne true
         }
 
-        private void alertDialog(String message){
+        private void alertDialog(String message){ //Popup
             //On crée la fenetre
             AlertDialog bugAlert = new AlertDialog.Builder(AddRevenuActivity.this).create();
 
@@ -118,6 +122,7 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
 
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    //ça enlève la Popup
                 }
             });
 
@@ -126,26 +131,38 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
         }
 
         @Override
-        public void onClick(View v){
-            if(isEmpty(eTIntitule.getText().toString()) || isEmpty(eTMontant.getText().toString())){
-                alertDialog(getString(R.string.AlertDialog_champsrempli));
+        public void onClick(View v){ //Clic sur le bouton Valider
+            if(isEmpty(eTIntitule.getText().toString()) || isEmpty(eTMontant.getText().toString())){ //On vérifie qu'aucun champ et vide
+                alertDialog(getString(R.string.AlertDialog_champsrempli)); //Si ce n'est pas le cas on afficher une popup d'alerte
             }
-            else {
-                String contenuIntitule = eTIntitule.getText().toString();
-                double contenuMontant = Double.parseDouble(eTMontant.getText().toString());
-                int contenuJour = Integer.parseInt(spJ.getSelectedItem().toString());
-                int contenuMois = Integer.parseInt(spM.getSelectedItem().toString());
-                int contenuAnnee = Integer.parseInt(spA.getSelectedItem().toString());
+
+            else { //Sinon
                 boolean contenuSwitchPerio = switch_periodicite.isChecked();
-                String contenuCategorie = spCat.getSelectedItem().toString();
-                Date d = new Date(contenuJour,contenuMois,contenuAnnee);
-                donneesBudget data= new donneesBudget(contenuIntitule,d,contenuMontant,contenuSwitchPerio,contenuCategorie);
-                listDR.add(data);
-                saveListDR(listDR);
-                Intent intent = new Intent(AddRevenuActivity.this,DepenseRevenuActivity.class);
-                intent.putExtra("listDR",listDR);
-                startActivity(intent);
-                AddRevenuActivity.this.finish();
+                if(contenuSwitchPerio == true){
+                    afficherPopUpPerio();
+                }
+                else{
+                    String contenuPerio = "null";
+                    System.out.println(contenuPerio);
+                    ///On va venir mettre toutes les informations rentrées par l'utilisateur dans des variables :
+                    String contenuIntitule = eTIntitule.getText().toString();
+                    double contenuMontant = Double.parseDouble(eTMontant.getText().toString());
+                    int contenuJour = Integer.parseInt(spJ.getSelectedItem().toString());
+                    int contenuMois = Integer.parseInt(spM.getSelectedItem().toString());
+                    int contenuAnnee = Integer.parseInt(spA.getSelectedItem().toString());
+                    String contenuCategorie = spCat.getSelectedItem().toString();
+                    //On créé une date grâce au contenu des différents spinners
+                    Date d = new Date(contenuJour,contenuMois,contenuAnnee);
+                    //On crée une nouvelles donnée (Dépense ou Revenus) avec les informations
+                    donneesBudget data= new donneesBudget(contenuIntitule,d,contenuMontant,contenuSwitchPerio,contenuPerio,contenuCategorie);
+                    //data.displayDonneesBudget();
+                    listDR.add(data); //On ajoute cette données à notre liste de données
+                    saveListDR(listDR); //On sauvegarde la liste mise à jour
+                    Intent intent = new Intent(AddRevenuActivity.this,DepenseRevenuActivity.class); //On créer une nouvelle intent vers la vue qui afficher la liste
+                    intent.putExtra("listDR",listDR); //On envoie notre liste vers cette vue
+                    startActivity(intent); //On lance a nouvelle activité
+                    AddRevenuActivity.this.finish(); //Et on la termine
+                }
             }
         }
     };
@@ -157,7 +174,7 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
         return d;
     }
 
-    private void saveListDR(ArrayList<donneesBudget> liste){
+    private void saveListDR(ArrayList<donneesBudget> liste){ //Fonction qui permet la sauvegarde de la liste dans un fichier .txt
         //On récupère la taille de la liste puis on crée un tableau de string aussi grand
         int tailleArray = liste.size();
         String [] savedText = new String[tailleArray];
@@ -168,8 +185,8 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
         //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
             //Ici on écrit un élément et on sépare deux éléments avec des points virgule
-            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getCategorie();
-
+            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getTypePeriodicite()+";"+liste.get(i).getCategorie()+";";
+            System.out.println(temp);
             //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;
         }
@@ -222,6 +239,7 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
         double tempMontant;
         boolean tempPeriodicite;
         String tempCategorie;
+        String tempTypePeriodicite;
 
         //Ce tableau permet de récupérer le splitage de la chaine du tableau loadText
         String[] temp;
@@ -234,19 +252,75 @@ public class AddRevenuActivity extends AppCompatActivity implements Serializable
 
                 //On récupère nos variables
                 tempIntitule = temp[0];
-                System.out.println(tempIntitule+"\n");
-                tempDate = new Date(0,0,0);
-                System.out.println(temp[1]);
+                tempDate = toDate(temp[1]);
                 tempMontant = Double.parseDouble(temp[2]);
                 tempPeriodicite = Boolean.parseBoolean(temp[3]);
-                tempCategorie = temp[4];
+                tempTypePeriodicite = temp[4];
+                tempCategorie = temp[5];
 
                 //On ajoute notre produit à l'arrayList
-                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite,tempCategorie));
+                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite,tempTypePeriodicite,tempCategorie));
             }
 
         }
     }
 
+    public void afficherPopUpPerio(){
+        LayoutInflater factory = LayoutInflater.from(AddRevenuActivity.this);
+        final View alertDialogView = factory.inflate(R.layout.alertdialog_afficher_choix_perio, null);
 
+        //Création de l'AlertDialog
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+
+        //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
+        popup.setView(alertDialogView);
+
+        //On donne un titre à l'AlertDialog
+        popup.setTitle(R.string.alertdialog_choix_perio);
+
+        rb_annuel_popup=(RadioButton)alertDialogView.findViewById(R.id.radioButton_annuel);
+        rb_mensuel_popup=(RadioButton)alertDialogView.findViewById(R.id.radioButton_mensuel);
+        rb_trimestriel_popup=(RadioButton)alertDialogView.findViewById(R.id.radioButton_trimestriel);
+        rb_hebdo_popup=(RadioButton)alertDialogView.findViewById(R.id.radioButton_hebdo);
+
+        //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
+        popup.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                boolean contenuSwitchPerio = switch_periodicite.isChecked();
+                String contenuPerio = new String();
+                if(rb_mensuel_popup.isChecked()){
+                    contenuPerio = rb_mensuel_popup.getText().toString();
+                }
+                else if(rb_annuel_popup.isChecked()){
+                    contenuPerio = rb_annuel_popup.getText().toString();
+                }
+                else if(rb_hebdo_popup.isChecked()){
+                    contenuPerio = rb_hebdo_popup.getText().toString();
+                }
+                else if(rb_trimestriel_popup.isChecked()){
+                    contenuPerio = rb_trimestriel_popup.getText().toString();
+                }
+                else contenuPerio ="null";
+                ///On va venir mettre toutes les informations rentrées par l'utilisateur dans des variables :
+                String contenuIntitule = eTIntitule.getText().toString();
+                double contenuMontant = Double.parseDouble(eTMontant.getText().toString());
+                int contenuJour = Integer.parseInt(spJ.getSelectedItem().toString());
+                int contenuMois = Integer.parseInt(spM.getSelectedItem().toString());
+                int contenuAnnee = Integer.parseInt(spA.getSelectedItem().toString());
+                String contenuCategorie = spCat.getSelectedItem().toString();
+                //On créé une date grâce au contenu des différents spinners
+                Date d = new Date(contenuJour,contenuMois,contenuAnnee);
+                //On crée une nouvelles donnée (Dépense ou Revenus) avec les informations
+                donneesBudget data= new donneesBudget(contenuIntitule,d,contenuMontant,contenuSwitchPerio,contenuPerio,contenuCategorie);
+                //data.displayDonneesBudget();
+                listDR.add(data); //On ajoute cette données à notre liste de données
+                saveListDR(listDR); //On sauvegarde la liste mise à jour
+                Intent intent = new Intent(AddRevenuActivity.this,DepenseRevenuActivity.class); //On créer une nouvelle intent vers la vue qui afficher la liste
+                intent.putExtra("listDR",listDR); //On envoie notre liste vers cette vue
+                startActivity(intent); //On lance a nouvelle activité
+                AddRevenuActivity.this.finish(); //Et on la termine
+            } });
+
+        popup.show();
+    }
 }

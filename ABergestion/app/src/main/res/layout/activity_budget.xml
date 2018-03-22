@@ -9,11 +9,19 @@
        android:id="@+id/textView_budget_restant"
        android:layout_width="376dp"
        android:layout_height="29dp"
-       android:text="Budget restant du mois :"
+       android:layout_marginBottom="8dp"
+       android:layout_marginEnd="8dp"
+       android:layout_marginStart="16dp"
+       android:layout_marginTop="8dp"
+       android:text="Budget restant:"
        android:textSize="18sp"
-       tools:ignore="MissingConstraints"
-       tools:layout_editor_absoluteX="3dp"
-       tools:layout_editor_absoluteY="8dp" />
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.0"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.0"
+       tools:ignore="MissingConstraints" />
 
    <TextView
        android:id="@+id/budget_restant"
@@ -65,5 +73,20 @@
        app:layout_constraintTop_toBottomOf="@+id/add_depense"
        tools:layout_editor_absoluteX="147dp"
        tools:layout_editor_absoluteY="219dp" />
+
+   <Button
+       android:id="@+id/button_afficher_stats"
+       android:layout_width="278dp"
+       android:layout_height="61dp"
+       android:layout_marginBottom="8dp"
+       android:layout_marginEnd="8dp"
+       android:layout_marginStart="8dp"
+       android:layout_marginTop="8dp"
+       android:text="Afficher statistiques"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.626" />
 
 </android.support.constraint.ConstraintLayout>

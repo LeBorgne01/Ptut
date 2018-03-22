@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -45,6 +46,8 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
     private ArrayList<String> datas;
     private donneesBudget test1,test2,test3;
     private ArrayList<donneesBudget> listDR;
+    private String contenuPerioTmp;
+    private RadioButton rb_mensuel_popup, rb_annuel_popup, rb_hebdo_popup,rb_trimestriel_popup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         double tempMontant;
         boolean tempPeriodicite;
         String tempCategorie;
+        String tempTypePeriodicite;
 
         //Ce tableau permet de récupérer le splitage de la chaine du tableau loadText
         String[] temp;
@@ -104,10 +108,11 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
                 tempDate = toDate(temp[1]);
                 tempMontant = Double.parseDouble(temp[2]);
                 tempPeriodicite = Boolean.parseBoolean(temp[3]);
-                tempCategorie = temp[4];
+                tempTypePeriodicite = temp[4];
+                tempCategorie = temp[5];
 
                 //On ajoute notre produit à l'arrayList
-                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite,tempCategorie));
+                liste.add(new donneesBudget(tempIntitule,tempDate,tempMontant,tempPeriodicite,tempTypePeriodicite,tempCategorie));
             }
 
         }
@@ -138,7 +143,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
             //Ici on écrit un élément et on sépare deux éléments avec des points virgule
-            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getCategorie();
+            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getTypePeriodicite()+";"+liste.get(i).getCategorie();
 
             //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;
@@ -197,7 +202,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         textView_contenu_categorie.setText(listDR.get(pos).getCategorie());
         TextView textView_contenu_periodicite = (TextView)alertDialogView.findViewById(R.id.textView_contenu_periodicite);
         if(listDR.get(pos).isPeriodicite()) {
-            textView_contenu_periodicite.setText("Oui");
+            textView_contenu_periodicite.setText(listDR.get(pos).getTypePeriodicite());
         }
         else textView_contenu_periodicite.setText("Non");
 
@@ -219,7 +224,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
                 saveListDR(listDR);
                 showListView();
                 if(!tmp) {
-                    Toast.makeText(DepenseRevenuActivity.this, "Dépense supprimé", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DepenseRevenuActivity.this, "Dépense supprimée", Toast.LENGTH_SHORT).show();
                 }
                 else Toast.makeText(DepenseRevenuActivity.this, "Revenu supprimé", Toast.LENGTH_SHORT).show();
             } });
@@ -229,7 +234,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
                 LayoutInflater factory = LayoutInflater.from(DepenseRevenuActivity.this);
 
                 String[] listCatR ={"Salaire","Jeu d'argent","Investissement"};
-                String[] listCatD= {"Jeu","Nourriture&Hygiène","Restaurant","Sortie","Shopping"};
+                final String[] listCatD= {"Jeu","Nourriture&Hygiène","Restaurant","Sortie","Shopping"};
 
                 if(listDR.get(pos).getMontant() < 0) {
                     adaptCat = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, listCatD);
@@ -262,20 +267,20 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
 
                     Button button_valider = (Button)alertDialogView_modifier_dr.findViewById(R.id.button_valider);
                     button_valider.setVisibility(View.INVISIBLE);
-                    EditText editText_intitule = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_intitule);
+                    final EditText editText_intitule = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_intitule);
                     editText_intitule.setText(listDR.get(pos).getIntitule());
-                    EditText editText_montant = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_montant);
+                    final EditText editText_montant = (EditText) alertDialogView_modifier_dr.findViewById(R.id.editText_montant);
                     editText_montant.setText(String.valueOf(listDR.get(pos).getMontant()));
-                    Spinner spinner_jour = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_jour);
+                    final Spinner spinner_jour = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_jour);
                     spinner_jour.setAdapter(adapt1);
                     spinner_jour.setSelection(listDR.get(pos).getDate().getJour() - 1);
-                    Spinner spinner_mois = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_mois);
+                    final Spinner spinner_mois = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_mois);
                     spinner_mois.setAdapter(adapt3);
                     spinner_mois.setSelection(listDR.get(pos).getDate().getMois() - 1);
-                    Spinner spinner_annee = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_annee);
+                    final Spinner spinner_annee = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_annee);
                     spinner_annee.setAdapter(adapt2);
                     spinner_annee.setSelection(listDR.get(pos).getDate().getAnnee() - 2019);
-                    Spinner spinner_cat = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_categorie);
+                    final Spinner spinner_cat = (Spinner) alertDialogView_modifier_dr.findViewById(R.id.spinner_categorie);
                     spinner_cat.setAdapter(adaptCat);
                     int positionSpinnerCat = 0;
                     String categorieChoisi = listDR.get(pos).getCategorie();
@@ -306,12 +311,23 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
                             break;
                     }
                     spinner_cat.setSelection(positionSpinnerCat);
-                    Switch switch_perio = (Switch) alertDialogView_modifier_dr.findViewById(R.id.switch_periodicite);
+                    final Switch switch_perio = (Switch) alertDialogView_modifier_dr.findViewById(R.id.switch_periodicite);
                     switch_perio.setChecked(listDR.get(pos).isPeriodicite());
 
                     popup2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //On ferme la popup
+                        String contenuPerio;
+                        if(switch_perio.isChecked() == true){
+                            contenuPerio = afficherPopUpPerio();
+                        }
+                        else {contenuPerio = "null";}
+                        Date dtmp = new Date(Integer.parseInt(spinner_jour.getSelectedItem().toString()),Integer.parseInt(spinner_mois.getSelectedItem().toString()),Integer.parseInt(spinner_annee.getSelectedItem().toString()));
+                        donneesBudget tmp = new donneesBudget(editText_intitule.getText().toString(),dtmp,Double.parseDouble(editText_montant.getText().toString()),switch_perio.isChecked(),contenuPerio,spinner_cat.getSelectedItem().toString());
+                        listDR.remove(listDR.get(pos));
+                        listDR.add(tmp);
+                        //System.out.println("pos: "+ listDR.get(pos).getMontant());
+                        saveListDR(listDR);
+                        showListView();
                     } });
 
                     popup2.show();
@@ -341,5 +357,41 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         }
     }
 
+    public String afficherPopUpPerio(){
+        LayoutInflater factory = LayoutInflater.from(DepenseRevenuActivity.this);
+        final View alertDialogView = factory.inflate(R.layout.alertdialog_afficher_choix_perio, null);
+        //Création de l'AlertDialog
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+
+        //On affecte la vue personnalisé que l'on a crée à notre AlertDialog
+        popup.setView(alertDialogView);
+
+        //On donne un titre à l'AlertDialog
+        popup.setTitle(R.string.alertdialog_choix_perio);
+
+        rb_mensuel_popup = (RadioButton)alertDialogView.findViewById(R.id.radioButton_mensuel);
+        rb_hebdo_popup =(RadioButton)alertDialogView.findViewById(R.id.radioButton_hebdo);
+        rb_trimestriel_popup = (RadioButton)alertDialogView.findViewById(R.id.radioButton_trimestriel);
+        rb_annuel_popup = (RadioButton)alertDialogView.findViewById(R.id.radioButton_annuel);
+        //On crée un bouton "Annuler" à notre AlertDialog et on lui affecte un évènement
+        popup.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+               if(rb_annuel_popup.isChecked()){
+                   contenuPerioTmp = "Annuel";
+               }
+               else if(rb_mensuel_popup.isChecked()){
+                   contenuPerioTmp = "Mensuel";
+               }
+               else if(rb_hebdo_popup.isChecked()){
+                   contenuPerioTmp ="Hebdomadaire";
+               }
+               else if(rb_trimestriel_popup.isChecked()){
+                   contenuPerioTmp = "Trimestriel";
+               }
+            } });
+
+        popup.show();
+        return contenuPerioTmp;
+    }
 }
 
