@@ -143,7 +143,7 @@ public class DepenseRevenuActivity extends AppCompatActivity implements Serializ
         //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
             //Ici on écrit un élément et on sépare deux éléments avec des points virgule
-            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getCategorie();
+            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getTypePeriodicite()+";"+liste.get(i).getCategorie();
 
             //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;

@@ -202,6 +202,9 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
                 else if(rb_trimestriel_popup.isChecked()){
                     contenuPerio = rb_trimestriel_popup.getText().toString();
                 }
+                else{
+                    contenuPerio = "null";
+                }
                 ///On va venir mettre toutes les informations rentrées par l'utilisateur dans des variables :
                 String contenuIntitule = eTIntitule.getText().toString();
                 double contenuMontant = -(Double.parseDouble(eTMontant.getText().toString()));
@@ -243,7 +246,7 @@ public class AddDepenseActivity extends AppCompatActivity implements Serializabl
         //On parcourt le tableau pour y ajouter chaque element
         for(int i=0; i < tailleArray; i++){
             //Ici on écrit un élément et on sépare deux éléments avec des points virgule
-            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getTypePeriodicite()+";"+liste.get(i).getCategorie();
+            temp = liste.get(i).getIntitule()+";"+liste.get(i).getDate().dateToString()+";"+liste.get(i).getMontant()+";"+liste.get(i).isPeriodicite()+";"+liste.get(i).getTypePeriodicite()+";"+liste.get(i).getCategorie()+";";
             System.out.println(temp);
             //On affecte cette chaine au tableau sauvegarder
             savedText[i] = temp;

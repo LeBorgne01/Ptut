@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Window;
 import android.widget.TabHost;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class AfficherStatActivity extends TabActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_afficher_stats_main);
 
         Resources res = getResources();
@@ -26,12 +29,12 @@ public class AfficherStatActivity extends TabActivity {
         Intent intent;
 
         intent = new Intent(this, AfficherStatsNumActivity.class);
-        spec = tabHost.newTabSpec("Stat_num").setIndicator("Bâtiments").setContent(intent);
+        spec = tabHost.newTabSpec("Stat_num").setIndicator("Numérique").setContent(intent);
         tabHost.addTab(spec);
 
         intent = new Intent(this, AddDepenseActivity.class);
         spec = tabHost.newTabSpec("research")
-                .setIndicator("Recherche")
+                .setIndicator("Graphique")
                 .setContent(intent);
         tabHost.addTab(spec);
 
