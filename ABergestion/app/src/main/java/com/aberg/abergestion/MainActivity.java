@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -210,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         else{
+            Log.i("bug", "loadUser: "+nom);
             return true;
         }
     }
